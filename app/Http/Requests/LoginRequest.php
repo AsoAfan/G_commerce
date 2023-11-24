@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 
 class LoginRequest extends FormRequest
@@ -12,13 +15,13 @@ class LoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return !auth()->check();
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -28,9 +31,16 @@ class LoginRequest extends FormRequest
         ];
     }
 
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response([
+            'message' => $this->messages(),
+            'errors' => $validator->errors()->all(),
+        ], 422));
+    }
+
     function authenticate()
     {
-
 
 
         if (!Auth::attempt($this->only(['email', 'password']))) {
@@ -39,11 +49,10 @@ class LoginRequest extends FormRequest
 
         return [
             'message' => "Login Succeed",
-
-            "token" => Auth::user()->createToken('API Token')->plainTextToken,
-
+            'data' => [
+                "token" => Auth::user()->createToken('API Token')->plainTextToken,
+                'user' => Auth::user()
+            ],
         ];
-
-
     }
 }

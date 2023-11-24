@@ -57,16 +57,21 @@ trait EmailVerificationTrait
         RateLimiter::hit('otpRequest');
 
 
-        return ['message' => "verify Email sent", 'data' => ['parameter' => $otp->slug]];
+        return ['message' => "verify Email sent", 'data' => $otp->slug];
 
     }
 
 
-    function isVerified($email): bool
+    function isVerified($userOrEmail): bool
     {
-        $user = User::where('email', $email)->firstOrFail();
-//        dd($user->email_verified_at, $email, $user);
-        return (bool)$user->email_verified_at;
+        $user = $userOrEmail;
+
+        if (!$userOrEmail instanceof User)
+            $user = User::where('email', $userOrEmail)->first();
+
+
+        return (bool)$user?->email_verified_at;
+
 
     }
 

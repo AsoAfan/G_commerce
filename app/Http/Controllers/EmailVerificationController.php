@@ -15,8 +15,8 @@ class EmailVerificationController extends Controller
     public function __invoke(EmailVerificationRequest $request, Otp $otp)
     {
 
-        $email = $otp->user->email;
-        if ($this->isVerified($email)) return response(['message' => $email . " is already Verified"]); // refactor
+        $user = $otp->user;
+        if ($this->isVerified($user)) return response(['message' => $user->email . " is already Verified"]); // refactor
         // later because it is duplicated several times
 
 

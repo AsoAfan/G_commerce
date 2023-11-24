@@ -16,4 +16,8 @@ Route::middleware(['guest:sanctum'])->group(function () {
         ->missing(fn() => response(['message' => "Not Found"], 404));
 
 
+
+    Route::post('/test', [\App\Http\Controllers\ProductController::class, 'store']);
+    Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index']);
+
 });

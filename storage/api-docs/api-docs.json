@@ -1,0 +1,65 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My Laravel API",
+        "description": "This is a sample Laravel API documentation.",
+        "termsOfService": "https://www.example.com/terms",
+        "contact": {
+            "name": "John Doe",
+            "url": "https://www.example.com/john-doe",
+            "email": "john.doe@example.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Local development server"
+        }
+    ],
+    "paths": {
+        "api/": {},
+        "/api/products": {
+            "get": {
+                "summary": "Returns all products with thier relations",
+                "description": "Returns all products with associated categories and attributes",
+                "operationId": "showProducts",
+                "responses": {
+                    "200": {
+                        "description": "All product retrieved successfully"
+                    }
+                }
+            }
+        },
+        "/product/store": {
+            "post": {
+                "summary": "Create new product",
+                "description": "Stores new product with its attributes into the database",
+                "operationId": "Produc",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Test"
+                    }
+                }
+            }
+        }
+    }
+}

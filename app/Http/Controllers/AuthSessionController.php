@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
-use App\Models\User;
 use App\Traits\EmailVerificationTrait;
 use Illuminate\Support\Facades\Auth;
 

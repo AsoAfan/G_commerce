@@ -62,5 +62,5 @@ php artisan serve
 Happy coding 🥰
 
 
-Copyright © 2024 by [Gigant Technology](https://www.gigant.tech/), inc. All rights reserved.
+ © 2024 by [Gigant Technology](https://www.gigant.tech/), inc.
 

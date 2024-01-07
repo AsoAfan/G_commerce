@@ -43,9 +43,12 @@ class AuthSessionController extends Controller
 
     function destroy()
     {
-        (Auth::user()->tokens()->each(function ($token) {
+/*        (Auth::user()->tokens()->each(function ($token) {
             $token->delete();
-        }));
+        }))
+        TODO: Logout other devices
+*/;
+        Auth::user()->tokens()->latest()->first()->delete();
 
         return ['message' => "Logout succeed"];
     }

@@ -4,7 +4,7 @@ info:
   description: Api docs for G_Commerce intern project
   version: 1.0.0
 servers:
-  - url: 'http://127.0.0.1:8000'
+  - url: 'http://127.0.0.1:8000/api'
   - url: "https://"
 paths:
   /register:
@@ -59,7 +59,7 @@ paths:
               tags:
                 - Auth
               summary: verifies email
-              description: verify user email with otp sent to his email
+              description: Verify user email with otp sent to his email
               parameters:
                 - name: slug
                   in: path
@@ -123,7 +123,7 @@ paths:
                             example: 422
   /verify/resend:
     post:
-      summary: verification again!
+      summary: Verification again!
       tags:
         - Auth
       description: sends new email verification request
@@ -161,7 +161,7 @@ paths:
       summary: Logs user in
       tags:
         - Auth
-      description: checks user credential and generates a token for him
+      description: Checks user credential and generates a token for him
       requestBody:
         content:
           application/json:
@@ -231,6 +231,42 @@ paths:
         422:
           $ref: '#/components/responses/422'
 
+  /user:
+    get:
+      summary: Get current user
+      tags:
+        - User
+      description: Get authenticated user data
+      security:
+        - ApiKey: []
+
+      responses:
+        200:
+          description: Data returned(OK)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+  /logout:
+    post:
+      tags:
+        - Auth
+      summary: Logs user out
+      description: Removes api token for current device
+      responses:
+        200:
+          description: Logout succeed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Logout succeed.
+        401:
+          $ref: '#/components/responses/401'
 
 
 
@@ -271,6 +307,16 @@ components:
                 type: integer
                 example: 202
 
+    401:
+      description: Token is not set
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthenticated.
 
     422:
       description: validation for payload data failed
@@ -292,10 +338,7 @@ components:
 
 
   schemas:
-
     User:
-
-
       type: object
       properties:
         id:
@@ -361,4 +404,10 @@ components:
           format: timestamp
           example: 2024-01-06T21:09:55.000000Z | NULL
 
+  securitySchemes:
+    ApiKey:
+      description: use `Bearer ${token}`
+      type: http
+      scheme: bearer
+      name: "Authorization"
 

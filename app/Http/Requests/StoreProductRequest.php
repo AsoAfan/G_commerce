@@ -11,7 +11,7 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return true; // TODO: Only Admins
     }
 
     /**
@@ -22,7 +22,10 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            "name" => ['required', "string"],
+            "price" => ['required', 'numeric'],
+            "currency" => ['string'],
+            "image_path" => ['required' , "unique:products,image_path"]
         ];
     }
 }

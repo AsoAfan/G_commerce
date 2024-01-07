@@ -25,16 +25,13 @@ class RegistrationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
+            'username' => ['required', 'string'],
             'email' => ['required', 'email'],
             'password' => [
                 'required',
                 'confirmed',
                 Password::min(8)
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
+
             ]
         ];
     }
@@ -46,6 +43,7 @@ class RegistrationRequest extends FormRequest
         throw new HttpResponseException(response([
             'message' => 'Validation failed',
             'errors' => $validator->errors()->all(),
+            'code' => 422
         ], 422));
     }
 }

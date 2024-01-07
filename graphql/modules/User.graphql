@@ -1,0 +1,27 @@
+
+type Query{
+    Users: User!
+}
+
+
+type Mutation{
+
+    signup(input: CreateUserInput @spread) : User! @create
+}
+
+
+
+input CreateUserInput {
+    id: ID
+    username: String!
+    email: String! @rules(apply: ["email"])
+    password: String! @rules(apply: ["required", "min:8"])
+    password_confirmation: String!
+}
+
+type User{
+    id: ID!
+    name: String!
+    email: String!
+    password: String!
+}

@@ -2,10 +2,13 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class LoginRequest extends FormRequest
@@ -34,25 +37,30 @@ class LoginRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response([
-            'message' => $this->messages(),
+            'message' => $this->messages() ?: "Login failed",
             'errors' => $validator->errors()->all(),
+            'code' => 422
         ], 422));
     }
 
-    function authenticate()
+    function authenticate(): Application|Response|array|\Illuminate\Contracts\Foundation\Application|ResponseFactory
     {
 
 
         if (!Auth::attempt($this->only(['email', 'password']))) {
-            return response(['message' => "Invalid credentials"], 400);
+            return response(['message' => "Invalid credentials", 'code' => 400], 400);
         }
 
         return [
             'message' => "Login Succeed",
+            'code' => 200,
+
             'data' => [
                 "token" => Auth::user()->createToken('API Token')->plainTextToken,
-                'user' => Auth::user()
+                'user' => Auth::user(),
             ],
+
         ];
     }
+
 }

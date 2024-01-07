@@ -29,10 +29,10 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('otpRequest',
-            fn(Request $request) => Limit::perMinute(3)
+            fn(Request $request) => Limit::perMinutes(5,3)
                 ->response(
                     fn(Request $request) => response(
-                        ['message' => "To many requests try again later"],
+                        ['message' => "To many requests try again later", ],
                         429
                     )
                 )

@@ -1,0 +1,29 @@
+openapi: 3.0.3
+info:
+  title: GCommerce
+  description: GCommerceApi
+  version: 1.0.0
+servers:
+  - url: 'http://127.0.0.1:8000/api'
+paths:
+  /register:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  format: email
+                  example: john@doe.com
+
+      responses:
+        200:
+          description: Ok
+
+  

@@ -65,6 +65,8 @@ class ProductController extends Controller
 
         ]);
 
+//        TODO: can be better(no loop)?
+
         foreach ($request->get('attributes') as $attr) {
 //            dd($attr);
             $attribute = Attribute::create(['name' => key($attr)]);

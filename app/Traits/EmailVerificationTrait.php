@@ -5,6 +5,9 @@ namespace App\Traits;
 use App\Models\Otp;
 use App\Models\User;
 use App\Notifications\OtpNotification;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -17,7 +20,10 @@ trait EmailVerificationTrait
 
 
         if ($this->isVerified($email)) {
-            return response(['message' => $email . " is already Verified"]);
+            return response([
+                    'message' => $email . " is already Verified",
+                    'code' => 202
+                ], 202);
 
         }
 
@@ -57,12 +63,16 @@ trait EmailVerificationTrait
         RateLimiter::hit('otpRequest');
 
 
-        return ['message' => "verify Email sent", 'data' => $otp->slug];
+        return [
+            'message' => "verify Email sent",
+            'data' => $otp->slug,
+            'code' => 200
+        ];
 
     }
 
 
-    function isVerified($userOrEmail): bool
+    function isVerified($userOrEmail): Application|ResponseFactory|\Illuminate\Foundation\Application|Response|bool
     {
         $user = $userOrEmail;
 

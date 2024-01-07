@@ -1,0 +1,364 @@
+openapi: 3.0.3
+info:
+  title: G_Commerce
+  description: Api docs for G_Commerce intern project
+  version: 1.0.0
+servers:
+  - url: 'http://127.0.0.1:8000'
+  - url: "https://"
+paths:
+  /register:
+    post:
+      summary: Create new user
+
+      tags:
+        - "Auth"
+      description: Creates new user and email verification will be sent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "Jon Doe"
+                email:
+                  type: string
+                  format: email
+                  example: "jonDoe@example.com"
+                password:
+                  type: string
+                  minimum: 8
+                  example: "password"
+                password_confirmation:
+                  type: string
+                  description: Same as password
+                  example: "password"
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+
+        400:
+          description: email is duplicated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Email already assigned to another account
+                  code:
+                    type: integer
+                    example: 400
+        422:
+          $ref: '#/components/responses/422'
+  /verify/{slug}:
+            post:
+              tags:
+                - Auth
+              summary: verifies email
+              description: verify user email with otp sent to his email
+              parameters:
+                - name: slug
+                  in: path
+                  required: true
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        secret:
+                          type: string
+                          example: "539159"
+              responses:
+                200:
+                  description: Email verified successfully
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+                            example: "JonDoe@example.com Verified successfully"
+                          code:
+                            type: integer
+                            example: 200
+                          data:
+                            example:
+                              - time:2024-01-06T21:09:55.000000Z
+
+                202:
+                  $ref: '#/components/responses/202'
+
+                400:
+                  description: you are late this time
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+                            example: Code has been expired
+                          code:
+                            type: integer
+                            example: 400
+                422:
+                  description: wrong code
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+                            example: Invalid verification code
+                          code:
+                            type: integer
+                            example: 422
+  /verify/resend:
+    post:
+      summary: verification again!
+      tags:
+        - Auth
+      description: sends new email verification request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "JonDoe@example.com"
+      responses:
+        200:
+          $ref: '#/components/responses/200'
+        202:
+          $ref: '#/components/responses/202'
+        429:
+          description: "it is enough for now, take a rest"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: To many requests try again later
+                  code:
+                    type: integer
+                    example: 429
+  /login:
+    post:
+      summary: Logs user in
+      tags:
+        - Auth
+      description: checks user credential and generates a token for him
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "jonDoe@example.com"
+                password:
+                  type: string
+                  example: "password"
+      responses:
+        200:
+          description: Token successfully generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Login Succeed
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    type: object
+                    properties:
+                      token:
+                        type: string
+                        example: 1|oztvQfLoaWqHwpikri0XEPPUAVe4NaccyGeqZnk79e78df81
+                      user:
+                        $ref: '#/components/schemas/User'
+        403:
+          description: Email not verified
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Verify email first
+                  code:
+                    type: integer
+                  data:
+                    type: array
+                    example:
+                      - email:JonDoe@example.com
+
+
+        404:
+          description: User does not exist
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: it seems you don't have account! no problem just signup
+                  code:
+                    type: integer
+                    example: 404
+        422:
+          $ref: '#/components/responses/422'
+
+
+
+
+
+
+
+
+
+components:
+  responses:
+    200:
+      description: verification email has been sent
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: verify Email sent
+              data:
+                type: string
+                example: 2y10btzqnvt8tyy5qwyokuzydgbnmebxa9pwnmdalqkzqgczzmnzi9
+              code:
+                type: integer
+                example: 200
+    202:
+      description: nothing to do
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "JoeDoe@example.com is already Verified"
+              code:
+                type: integer
+                example: 202
+
+
+    422:
+      description: validation for payload data failed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Validation/Login failed
+              code:
+                type: integer
+                example: 422
+              errors:
+                example:
+                  - The password field confirmation does not match.
+                  - The email field must be a valid email address.
+
+
+  schemas:
+
+    User:
+
+
+      type: object
+      properties:
+        id:
+          type: string
+          pattern: '^[0-9a-fA-F\-]{36}$'
+        username:
+          type: string
+          example: "Jon Doe"
+        email:
+          type: string
+          example: "jonDoe@example.com"
+
+        phone_number:
+          type: string
+          pattern: "^0750-[0-9]{3}-[0-9]{4}$"
+
+        image_path:
+          type: string
+          example: path/to/image.png
+
+        longitude:
+          type: string
+          example: 44°00′33″E
+
+        latitude:
+          type: string
+          example: 36°11′28″N
+
+        location_type:
+          type: string
+          example: Apartment
+
+        country:
+          type: string
+          example: Iraq
+
+        cart:
+          type: object
+          example: Unknown -> database for this model does not completed yet
+
+        phone_verified_at:
+          type: string
+          format: timestamp
+          example: 2024-01-06T21:09:55.000000Z | NULL
+
+        email_verified_at:
+          type: string
+          format: timestamp
+          example: 2024-01-06T21:09:55.000000Z | NULL
+
+        created_at:
+          type: string
+          format: timestamp
+          example: 2024-01-06T21:09:55.000000Z | NULL
+
+        updated_at:
+          type: string
+          format: timestamp
+          example: 2024-01-06T21:09:55.000000Z | NULL
+
+        deleted_at:
+          type: string
+          format: timestamp
+          example: 2024-01-06T21:09:55.000000Z | NULL
+
+

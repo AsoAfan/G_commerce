@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Models\User;
 use App\Traits\EmailVerificationTrait;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,23 +12,7 @@ class AuthSessionController extends Controller
 
     use EmailVerificationTrait;
 
-    /**
-     * @OA\\Get(
-     *     path="/api/users",
-     *     operationId="getUsersList",
-     *     tags={"Users"},
-     *     summary="Get list of users",
-     *     description="Returns a list of users",
-     *     @OA\\Response(
-     *         response=200,
-     *         description="Successful operation",
-     *         @OA\\JsonContent(
-     *             type="array",
-     *             @OA\\Items(ref="#/components/schemas/User")
-     *         )
-     *     ),
-     * )
-     */
+
     public function show()
     {
         return Auth::user();
@@ -37,14 +22,23 @@ class AuthSessionController extends Controller
 
     function store(LoginRequest $request)
     {
+        $user = User::where('email', $request->input('email'))->first();
+
+        if (!$user) {
+            return response([
+                "message" => "it seems you don't have account! no problem just signup",
+                "code" => 404
+            ], 404);
+        }
 
         return $this->
-        isVerified($request->input('email'))
+        isVerified($user)
             ? $request->authenticate()
-            : [
+            : response([
                 'message' => "Verify email first",
+                'code' => 403,
                 'data' => ['email' => $request->email]
-            ];
+            ], 403);
     }
 
     function destroy()

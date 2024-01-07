@@ -31,7 +31,7 @@ class UserController extends Controller
         $newUser = null;
 //        if ($validator->fails()) return response(['message' => $validator->messages()->all()], 400);
         try {
-            $newUser = User::create($request->only(['name', 'email', 'password']));
+            $newUser = User::create($request->only(['username', 'email', 'password']));
             $verify_param = '';
             if ($newUser) {
                 return $this->sendOtp($newUser->email);
@@ -39,7 +39,10 @@ class UserController extends Controller
 
         } catch (UniqueConstraintViolationException $e) {
 
-            return response(['message' => 'Email already assigned to another account'], 400);
+            return response([
+                'message' => 'Email already assigned to another account',
+                'code' => 400
+            ], 400);
         }
 //        return ['message' => "verify Email sent", 'data' => ['parameter' => $verify_param]];
 

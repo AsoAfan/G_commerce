@@ -44,6 +44,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+
+    public function location()
+    {
+        $this->belongsTo(Location::class);
+    }
+
+
+
     public function otp()
     {
         return $this->hasOne(Otp::class);

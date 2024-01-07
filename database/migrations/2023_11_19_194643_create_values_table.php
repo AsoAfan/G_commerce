@@ -12,10 +12,12 @@ return new class extends Migration {
     {
         Schema::create('values', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->index()->constrained()->cascadeOnDelete();
-            $table->foreignId('attribute_id')->index()->constrained()->cascadeOnDelete();
+            $table->foreignUuid('product_id')->constrained('products')->cascadeOnDelete();
+            $table->foreignId('attribute_id')->constrained('attributes')->cascadeOnDelete();
             $table->string("display_type");
             $table->string('value');
+
+            $table->index(['product_id', 'attribute_id']);
             $table->timestamps();
         });
     }

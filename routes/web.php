@@ -26,6 +26,10 @@ Route::get('/sanctum/csrf-cookie', function () {
     ];
 });
 
+Route::get('/docs', function (){
+    return view('docs');
+});
+
 require __DIR__ . '/web/guest.php';
 
 

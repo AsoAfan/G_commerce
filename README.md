@@ -1,17 +1,9 @@
-<p align="center"><a href="https://www.gigant.tech" target="_blank"><img src="https://drive.google.com/uc?export=view&id=1W0gAjU3Z_u2-34cAODGGmwXjNky1dSc3" height="200" alt="Gigants Logo"></a></p>
+<p align="center">
+<a href="https://www.gigant.tech" target="_blank"><img src="./public/Img/GigantLogo.png" height="200" alt="Gigants Logo"></a>
+<h1 align="center">Gigant Tech</h1>
 
 
-[//]: # (<p align="center">)
 
-[//]: # (<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>)
-
-[//]: # (<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>)
-
-[//]: # (<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>)
-
-[//]: # (<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>)
-
-[//]: # (</p>)
 
 
 # G_Commerce 
@@ -63,10 +55,5 @@ php artisan serve
 
 Happy coding 🥰
 
-<<<<<<< HEAD
- &copy; 2024 by [Gigant Technology](https://www.gigant.tech/), inc.
-=======
 
-Copyright © 2024 by [Gigant Technology](https://www.gigant.tech), inc. All rights reserved.
->>>>>>> 7443d54752dc036e78c0f9fca271e63db9513bab
-
+Copyright © 2024 by [Gigant Technology](https://www.gigant.tech).

@@ -24,6 +24,8 @@ class User extends Authenticatable
         'password',
     ];
 
+
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -32,6 +34,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'otp_code',
+        'otp_secret',
+        'otp_slug',
+        'otp_expires_at'
     ];
 
     /**
@@ -64,6 +70,13 @@ class User extends Authenticatable
     {
 
         $this->attributes['password'] = bcrypt($value);
+
+    }
+
+    function setRoleAttribute($value)
+    {
+
+        $this->attributes['role'] = strtolower($value);
 
     }
 }

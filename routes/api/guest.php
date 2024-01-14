@@ -13,7 +13,7 @@ Route::middleware(['guest:sanctum'])->group(function () {
 
 
     Route::post('/verify/resend', [EmailVerificationController::class, 'update'])->middleware('throttle:otpRequest');
-    Route::post('/verify/{otp:slug}',  EmailVerificationController::class)
+    Route::post('/verify/{user:otp_slug}',  EmailVerificationController::class)
         ->missing(fn() => response(['message' => "Not Found"], 404));
 
 

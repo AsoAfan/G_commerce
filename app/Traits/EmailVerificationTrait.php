@@ -35,8 +35,17 @@ trait EmailVerificationTrait
         $otp_slug = Str::slug($otp_hashed . Str::substr($user->id, 0, 1));
 
 //        dd($user->otp->secret);
+//        dd($otp_slug);
 
-        if ($user->otp) {
+        $user->update([
+            'otp_code' => $otp_code,
+            'otp_slug' => $otp_slug,
+            'otp_secret' => $otp_hashed,
+            'otp_expires_at'=> now()->addMinutes(5)
+
+        ]);
+
+        /*if ($user->otp) {
             $user->otp()->update([
 
                 'hashed' => $otp_hashed,
@@ -54,9 +63,9 @@ trait EmailVerificationTrait
                 'expires_at' => now()->addMinutes(5),
                 'user_id' => $user->id
             ]);
-        }
+        }*/
 
-        $otp = $user->otp?->fresh() ?: $otp;
+//        $otp = $user->otp?->fresh() ?: $otp;
 
         $user->notify(new OtpNotification($otp_code));
 
@@ -65,7 +74,7 @@ trait EmailVerificationTrait
 
         return [
             'message' => "verify Email sent",
-            'data' => $otp->slug,
+            'data' => $user->otp_slug,
             'code' => 200
         ];
 

@@ -22,7 +22,7 @@ This project made as an intern project, it is about an ecommerce app
 
 ---
 install dependencies
-```
+```shell
 composer update && npm install
 ```
 
@@ -33,14 +33,14 @@ duplicate `.env.example` and rename duplicated to `.env`
 
 ---
 
-```
+```shell
 php artisan key:generate
 ```
 ### Database setup
 
 ---
 fill up database credentials in `.env` and then migrate the database
-```
+```shell
 php artisan migrate
 ```
 
@@ -48,19 +48,20 @@ php artisan migrate
 
 ---
 
-```
+```shell
 php artisan serve 
 ```
 
 #### REST API:
 - base url: [http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)
 - docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-#### GraphQL URL
-- base url and docs: [http://127.0.0.1:8000/garphiql](http://127.0.0.1:8000/graphiql) (Developing...)
+#### GraphQL API <sub>(not available yet)</sub>
+- base url: [http://127.0.0.1:8000/graphql](http://127.0.0.1:8000/graphql)
+- docs: [http://127.0.0.1:8000/garphiql](http://127.0.0.1:8000/graphiql)
     
 ---
+
 Happy coding 🥰
 
-
- © 2024 by [Gigant Technology](https://www.gigant.tech/), inc.
+ &copy; 2024 by [Gigant Technology](https://www.gigant.tech/), inc.
 

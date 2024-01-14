@@ -16,6 +16,8 @@ class Jsonify
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
+        $response->header('Content-Type', 'application/json');
+        $response->header('Accept', 'application/json');
         return response()->json($response->getOriginalContent(), $response->getStatusCode());
     }
 }

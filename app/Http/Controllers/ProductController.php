@@ -7,77 +7,59 @@ use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Attribute;
 use App\Models\Product;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     *
-     * @OA\Get(
-     *     path="/api/products",
-     *     summary="Returns all products with thier relations",
-     *     description="Returns all products with associated categories and attributes",
-     *     operationId="showProducts",
-     *
-     *     @OA\Response(
-     *         response="200",
-     *         description="All product retrieved successfully"
-     *     )
-     *
-     * )
-     *
-     *
-     */
+
     public function index()
     {
 //        return Product::all();
         return ProductResource::collection(Product::all());
     }
 
-    /**
-     * @OA\Post(
-     *     path="/product/store",
-     *     operationId="Produc",
-     *     summary="Create new product",
-     *     description="Stores new product with its attributes into the database",
-     *     @OA\RequestBody(
-     *         @OA\JsonContent(
-     *             @OA\Property(property="name", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Test"
-     *     )
-     * )
-     */
+
 
     public function store(StoreProductRequest $request)
     {
 
 //        dd($request->all(), $request->except('attributes'));
-        $p = Product::create([
-            "name" => "product 1",
-            "price" => "10",
-            "currency" => "IQD",
-            "image_path" => "path/to/image.jpg",
+        $newProduct = Product::create([
+            "name" => $request->post('name'),
+            'description' => $request->post('description'),
+            "price" => $request->post('price'), // TODO: Refactor later
+            "currency" => $request->post('currency'),
+            "image_path" => $request->post('image_path'), // TODO: Refactor later
+            "image_name" => $request->post('image_name'), // TODO: Refactor later
+
+            "brand_id" => $request->post('brand_id'),
+            "category_id" => $request->post('category_id'),
+            'discount_id' => $request->post('discount_id')
+            // TODO: Update api_docs and test this code
+//            "group_id" => $request->post('group_id')
 
         ]);
 
+        $newProduct->group()->attach($request->post('group_ids'));
+        $newProduct->subCategories()->attach($request->post('sub_category_ids'));
+
 //        TODO: can be better(no loop)?
 
-        foreach ($request->get('attributes') as $attr) {
-//            dd($attr);
-            $attribute = Attribute::create(['name' => key($attr)]);
-            $p->attributes()->attach($attribute, [
-                'value' => $attr[key($attr)],
-                'display_type' => $attr['display_type'] ?: "dropdown"
+//        ['color' : 'red']
+        foreach ($request->post('attributes') as $attribute) {
+//            dd($attribute);
+            $newAttribute = Attribute::where('name', key($attribute))->first();
+
+            if (! $newAttribute) $newAttribute = Attribute::create(['name' => key($attribute)]);
+
+            $newProduct->attributes()->attach($newAttribute, [
+                'value' => $attribute[key($attribute)],
+                'display_type' => $attribute['display_type']
             ]);
         }
 
 
-        return ProductResource::collection(Product::all());
+        return ['message' => Str::substr($newProduct->name, 0, 12) . " Added successfully", 'code' => 200];
     }
 
     /**

@@ -13,20 +13,21 @@ paths:
 
       tags:
         - "Auth"
-      description: Creates new user and email verification will be sent
+      description: Creates new user and email verification will be sent.
+        <a href = "http://127.0.0.1:8000/img/register.png" target="_blank">See Code Snippet</a>
+
+
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                username:
-                  type: string
-                  example: "Jon Doe"
                 email:
                   type: string
                   format: email
                   example: "jonDoe@example.com"
+
                 password:
                   type: string
                   minimum: 8
@@ -55,78 +56,82 @@ paths:
         422:
           $ref: '#/components/responses/422'
   /verify/{slug}:
-            post:
-              tags:
-                - Auth
-              summary: verifies email
-              description: Verify user email with otp sent to his email
-              parameters:
-                - name: slug
-                  in: path
-                  required: true
-              requestBody:
-                required: true
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      properties:
-                        secret:
-                          type: string
-                          example: "539159"
-              responses:
-                200:
-                  description: Email verified successfully
-                  content:
-                    application/json:
-                      schema:
-                        type: object
-                        properties:
-                          message:
-                            type: string
-                            example: "JonDoe@example.com Verified successfully"
-                          code:
-                            type: integer
-                            example: 200
-                          data:
-                            example:
-                              - time:2024-01-06T21:09:55.000000Z
+    post:
+      tags:
+        - Auth
+      summary: verifies email
+      description: Verify user email with otp sent to his email.
+        <a href = "http://127.0.0.1:8000/img/EmailVerify.png" target="_blank">See Code Snippet</a>
+      parameters:
+        - name: slug
+          in: path
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                secret:
+                  type: string
+                  example: "539159"
+      responses:
+        200:
+          description: Email verified successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "JonDoe@example.com Verified successfully"
+                  code:
+                    type: integer
+                    example: 200
+                  data:
+                    example:
+                      - time:2024-01-06T21:09:55.000000Z
 
-                202:
-                  $ref: '#/components/responses/202'
+        202:
+          $ref: '#/components/responses/202'
 
-                400:
-                  description: you are late this time
-                  content:
-                    application/json:
-                      schema:
-                        type: object
-                        properties:
-                          message:
-                            type: string
-                            example: Code has been expired
-                          code:
-                            type: integer
-                            example: 400
-                422:
-                  description: wrong code
-                  content:
-                    application/json:
-                      schema:
-                        type: object
-                        properties:
-                          message:
-                            type: string
-                            example: Invalid verification code
-                          code:
-                            type: integer
-                            example: 422
+        400:
+          description: you are late this time
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Code has been expired
+                  code:
+                    type: integer
+                    example: 400
+        404:
+          $ref: '#/components/responses/404'
+        422:
+          description: wrong code
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid verification code
+                  code:
+                    type: integer
+                    example: 422
   /verify/resend:
     post:
       summary: Verification again!
       tags:
         - Auth
-      description: sends new email verification request
+      description: sends new email verification request.
+        <a href = "http://127.0.0.1:8000/img/EmailVerify.png" target="_blank">See Code Snippet</a>
       requestBody:
         required: true
         content:
@@ -161,7 +166,8 @@ paths:
       summary: Logs user in
       tags:
         - Auth
-      description: Checks user credential and generates a token for him
+      description: Checks user credential and generates a token for him.
+        <a href = "http://127.0.0.1:8000/img/Login.png" target="_blank">See Code Snippet</a>
       requestBody:
         content:
           application/json:
@@ -197,6 +203,20 @@ paths:
                         example: 1|oztvQfLoaWqHwpikri0XEPPUAVe4NaccyGeqZnk79e78df81
                       user:
                         $ref: '#/components/schemas/User'
+        400:
+          description: E-mail or Password is invalid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid credentials
+                  code:
+                    type: integer
+                    example: 400
+
         403:
           description: Email not verified
           content:
@@ -230,30 +250,15 @@ paths:
                     example: 404
         422:
           $ref: '#/components/responses/422'
-
-  /user:
-    get:
-      summary: Get current user
-      tags:
-        - User
-      description: Get authenticated user data
-      security:
-        - ApiKey: []
-
-      responses:
-        200:
-          description: Data returned(OK)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-
   /logout:
     post:
       tags:
         - Auth
       summary: Logs user out
-      description: Removes api token for current device
+      description: Removes all tokens for current user.
+        <a href = "http://127.0.0.1:8000/img/Logout.png" target="_blank">See Code Snippet</a>
+      security:
+        - ApiKey: [ ]
       responses:
         200:
           description: Logout succeed
@@ -267,6 +272,109 @@ paths:
                     example: Logout succeed.
         401:
           $ref: '#/components/responses/401'
+
+
+  /products/create:
+    post:
+      summary: Creates new product
+      description: creates new product with its attributes and there value.
+        <a href = "http://127.0.0.1:8000/img/NewProduct.png" target="_blank">See Code Snippet</a>
+      tags:
+        - Products
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Galaxy tab s9 ultra"
+                description:
+                  type: string
+                  example: "a tablet made by samsung"
+                price:
+                  type: number
+                  example: 1199.99
+                currency:
+                  type: string
+                  maximum: 3
+                  example: "$"
+                image_path:
+                  type: string
+                  example: "path/to/image/file.png"
+                image_name:
+                  type: string
+                  example: "file.png"
+                attributes:
+                  type: array
+                  items:
+                    properties:
+                      attribute_name:
+                        type: string
+                        example: value
+                      color:
+                        type: string
+                        example: red
+                      display_type:
+                        type: string
+                        required: true
+                        example: radioButton
+
+
+      responses:
+        200:
+          description: Process succeed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: <product_name> Added successfully
+                  code:
+                    type: integer
+                    example: 200
+        422:
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Validation failed
+                  errors:
+                    type: array
+                    example:
+                      - The image name has already been taken.
+                      - The description field is required.
+                  code:
+                    type: integer
+                    example: 422
+
+
+
+  /user:
+    get:
+      summary: Get current user
+      tags:
+        - User
+      description: Get authenticated user data.
+        <a href = "http://127.0.0.1:8000/img/CurrentUser.png" target="_blank">See Code Snippet</a>
+      security:
+        - ApiKey: [ ]
+
+      responses:
+        200:
+          description: Data returned(OK)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
 
 
 
@@ -318,6 +426,20 @@ components:
                 type: string
                 example: Unauthenticated.
 
+    404:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Not found
+              code:
+                type: integer
+                example: 404
+
     422:
       description: validation for payload data failed
       content:
@@ -339,55 +461,42 @@ components:
 
   schemas:
     User:
+      description: <a href = "http://127.0.0.1:8000/img/UserMigration.png" target="_blank">User Migration Code</a>
       type: object
       properties:
         id:
           type: string
           pattern: '^[0-9a-fA-F\-]{36}$'
+
         username:
           type: string
-          example: "Jon Doe"
+          example: "Jon Doe?"
         email:
           type: string
           example: "jonDoe@example.com"
 
         phone_number:
           type: string
-          pattern: "^0750-[0-9]{3}-[0-9]{4}$"
+          pattern: "^0750-[0-9]{3}-[0-9]{4}$?"
 
         image_path:
           type: string
-          example: path/to/image.png
+          example: "path/to/image.png?"
 
-        longitude:
-          type: string
-          example: 44°00′33″E
-
-        latitude:
-          type: string
-          example: 36°11′28″N
-
-        location_type:
-          type: string
-          example: Apartment
-
-        country:
-          type: string
-          example: Iraq
-
-        cart:
+        cart_id:
           type: object
           example: Unknown -> database for this model does not completed yet
-
-        phone_verified_at:
-          type: string
-          format: timestamp
-          example: 2024-01-06T21:09:55.000000Z | NULL
 
         email_verified_at:
           type: string
           format: timestamp
-          example: 2024-01-06T21:09:55.000000Z | NULL
+          example: 2024-01-06T21:09:55.000000Z?
+
+        phone_verified_at:
+          type: string
+          format: timestamp
+          example: 2024-01-06T21:09:55.000000Z?
+
 
         created_at:
           type: string

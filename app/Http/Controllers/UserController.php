@@ -13,6 +13,7 @@ class UserController extends Controller
 
     use EmailVerificationTrait;
 
+
     /**
      * Display a listing of the resource.
      */
@@ -28,10 +29,9 @@ class UserController extends Controller
     public function store(RegistrationRequest $request)
     {
 
-        $newUser = null;
 //        if ($validator->fails()) return response(['message' => $validator->messages()->all()], 400);
         try {
-            $newUser = User::create($request->only(['username', 'email', 'password']));
+            $newUser = User::create($request->only(['email', 'password']));
             $verify_param = '';
             if ($newUser) {
                 return $this->sendOtp($newUser->email);

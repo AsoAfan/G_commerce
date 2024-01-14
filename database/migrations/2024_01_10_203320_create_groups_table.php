@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
-            $table->uuid("id");
-            $table->string("latitude")->nullable();
-            $table->string("longitude")->nullable();
-            $table->string("location_name")->nullable();
+        Schema::create('groups', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->foreignUuid('discount_id')->nullable()->constrained('discounts')->nullOnDelete();
+            $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        Schema::dropIfExists('groups');
     }
 };

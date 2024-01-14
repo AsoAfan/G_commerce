@@ -12,14 +12,25 @@ return new class extends Migration {
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->index();
-//            $table->string('google_id')->nullable();
-//            $table->string('facebook_id')->nullable();
-            $table->string('username');
+            /*
+                $table->string('google_id')->nullable();
+                $table->string('facebook_id')->nullable();
+            */
+            $table->string('username')->nullable();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('phone_number')->unique()->nullable();
+            $table->string('image_path')->nullable();
             $table->string('password')->nullable();
+            $table->foreignId('cart_id')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('phone_verified_at')->nullable();
+            $table->integer('otp_code')->nullable();
+            $table->string('otp_secret')->nullable();
+            $table->string('otp_slug')->nullable();
+            $table->timestamp('otp_expires_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

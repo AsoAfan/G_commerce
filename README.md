@@ -1,4 +1,4 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://drive.google.com/uc?export=view&id=1W0gAjU3Z_u2-34cAODGGmwXjNky1dSc3" height="200" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://www.gigant.tech" target="_blank"><img src="https://drive.google.com/uc?export=view&id=1W0gAjU3Z_u2-34cAODGGmwXjNky1dSc3" height="200" alt="Gigants Logo"></a></p>
 
 
 [//]: # (<p align="center">)
@@ -63,5 +63,10 @@ php artisan serve
 
 Happy coding 🥰
 
+<<<<<<< HEAD
  &copy; 2024 by [Gigant Technology](https://www.gigant.tech/), inc.
+=======
+
+Copyright © 2024 by [Gigant Technology](https://www.gigant.tech), inc. All rights reserved.
+>>>>>>> 7443d54752dc036e78c0f9fca271e63db9513bab
 

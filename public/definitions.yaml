@@ -1,0 +1,126 @@
+User:
+  description: <a href = "http://127.0.0.1:8000/img/UserMigration.png" target="_blank">User Migration Code</a>
+  type: object
+  properties:
+    id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+
+    username:
+      type: string
+      example: "Jon Doe?"
+    email:
+      type: string
+      example: "jonDoe@example.com"
+
+    phone_number:
+      type: string
+      pattern: "^0750-[0-9]{3}-[0-9]{4}$?"
+
+    image_path:
+      type: string
+      example: "path/to/image.png?"
+
+    cart_id:
+      type: object
+      example: Unknown -> database for this model does not completed yet
+
+    email_verified_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z?
+
+    phone_verified_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z?
+
+
+    created_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z | NULL
+
+    updated_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z | NULL
+
+    deleted_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z | NULL
+Product:
+  type: object
+  properties:
+    id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+    name:
+      type: string
+      example: Galaxy tab s9 ultra
+    description:
+      type: string
+      example: a tablet made by samsung
+    price:
+      type: integer
+      example: 1199.99
+    currency:
+      type: string
+      example: $
+    image_path:
+      type: string
+      example: path/to/image/file.png
+    image_name:
+      type: string
+      example: file.png
+    brand:
+      $ref: '#/components/schemas/Brand'
+    discount:
+      $ref: '#/components/schemas/Discount'
+    attributes:
+      $ref: '#/components/schemas/Attribute'
+
+Attribute:
+  type: array
+  items:
+    type: object
+    properties:
+
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: color
+      value:
+        type: string
+        example: gray
+      display_type:
+        type: string
+        example: RadioButton
+Discount:
+  type: object
+  properties:
+    id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+    ratio:
+      type: number
+      example: 60
+    starts_at:
+      type: string
+      example: 2024-01-26 17:35:13
+    expires_at:
+      type: string
+      example: 2024-02-3 00:00:00
+
+Brand:
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 27
+    name:
+      type: string
+      example: Adidas

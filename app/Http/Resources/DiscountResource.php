@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AttributeResource extends JsonResource
+class DiscountResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,12 +14,11 @@ class AttributeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-//        return [];
         return [
-            "id" => $this->id,
-            "name" => $this->name,
-            "value" => $this->whenPivotLoaded('values', fn() => $this->pivot->value),
-            "display_type" => $this->whenPivotLoaded('values', fn() => $this->pivot->display_type),
+            'id' => $this->id,
+            'ratio' => $this->ratio,
+            'starts_at' => $this->starts_at,
+            'expires_at' => $this->expires_at
 
         ];
     }

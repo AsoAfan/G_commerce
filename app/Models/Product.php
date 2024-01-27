@@ -16,6 +16,8 @@ class Product extends Model
 
     protected $with = ['attributes'];
 
+    protected $hidden = ['discount_id', 'category_id', 'brand_id'];
+
 
     public function discount(): BelongsTo
     {

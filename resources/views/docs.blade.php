@@ -14,7 +14,7 @@
 
     function loadSwaggerUI() {
         const ui = SwaggerUIBundle({
-            url: "{{ asset('api_docs.yaml') }}",
+            url: "{{ asset('openapi/api_docs.yaml') }}",
             dom_id: '#swagger-ui',
             presets: [
                 SwaggerUIBundle.presets.apis,

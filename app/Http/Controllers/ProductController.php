@@ -14,10 +14,9 @@ class ProductController extends Controller
 
     public function index()
     {
-//        return Product::all();
-        return ProductResource::collection(Product::all());
+        return Product::with('discount')->get();
+//        return ProductResource::collection(Product::with("discount"));
     }
-
 
 
     public function store(StoreProductRequest $request)
@@ -40,17 +39,24 @@ class ProductController extends Controller
 
         ]);
 
-        $newProduct->group()->attach($request->post('group_ids'));
+
+        $newProduct->groups()->attach($request->post('group_ids'));
         $newProduct->subCategories()->attach($request->post('sub_category_ids'));
 
 //        TODO: can be better(no loop)?
-
+        /*
+         *
+         * [
+         *  "jsjs": sih
+         *
+         * */
 //        ['color' : 'red']
         foreach ($request->post('attributes') as $attribute) {
 //            dd($attribute);
-            $newAttribute = Attribute::where('name', key($attribute))->first();
+            $newAttribute = Attribute::firstOrCreate(['name' => key($attribute)]);
+//            $newAttribute = Attribute::where('name', key($attribute))->first();
 
-            if (! $newAttribute) $newAttribute = Attribute::create(['name' => key($attribute)]);
+//            if (! $newAttribute) $newAttribute = Attribute::create(['name' => key($attribute)]);
 
             $newProduct->attributes()->attach($newAttribute, [
                 'value' => $attribute[key($attribute)],
@@ -59,16 +65,20 @@ class ProductController extends Controller
         }
 
 
-        return ['message' => Str::substr($newProduct->name, 0, 12) . " Added successfully", 'code' => 200];
+        return response(['message' => Str::substr($newProduct->name, 0, 12) . " Added successfully", 'code' => 201], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        $product = Product::findOr($id, fn() => response(['message' => "Not found", 'code' => 404], 404))
+            ->with(['brand', 'discount'])
+            ->first();
+        return new ProductResource($product);
     }
+
 
     /**
      * Update the specified resource in storage.

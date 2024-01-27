@@ -1,0 +1,69 @@
+create-product:
+  description: Note that each attribute is an object of attribute_name and its display_type as keys with their values
+  content:
+    application/json:
+      schema:
+        type: object
+        properties:
+          name:
+            type: string
+            example: "Galaxy tab s9 ultra"
+          description:
+            type: string
+            example: "a tablet made by samsung"
+          price:
+            type: number
+            example: 1199.99
+          currency:
+            type: string
+            maximum: 3
+            example: "$"
+          image_path:
+            type: string
+            example: "path/to/image/file.png"
+          image_name:
+            type: string
+            example: "file.png"
+          attributes:
+            type: array
+            items:
+              type: object
+              properties:
+                attribute_name:
+                  type: string
+                  example: attribute_value
+                  required: true
+                display_type:
+                  type: string
+                  required: true
+                  example: radioButton
+
+
+          brand_id:
+            type: integer
+            example: 3
+          category_id:
+            type: integer
+            example: 5
+          discount_id:
+            type: string
+            pattern: '^[0-9a-fA-F\-]{36}$'
+          sub_category_ids:
+            type: array
+            example:
+              - 27
+              - 51
+          group_ids:
+            type: array
+            example:
+              - 33
+              - 79
+
+        required:
+          - name
+          - description
+          - price
+          - currency
+          - image_path
+          - image_name
+          - attributes

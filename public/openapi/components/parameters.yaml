@@ -1,0 +1,6 @@
+parameters:
+  id:
+    name: id
+    in: query
+    required: true
+    allowEmptyValue: false

@@ -1,0 +1,36 @@
+products-create:
+  post:
+    summary: Creates new product
+    description: creates new product with its attributes and there value.
+      <a href = "http://127.0.0.1:8000/img/NewProduct.png" target="_blank">See Code Snippet</a>
+    tags:
+      - Products
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/create-product'
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/general/201'
+      422:
+        $ref: '../components/responses.yaml#/general/422'
+products-{id}:
+  get:
+    summary: Get one product
+    description: Retrieve one product with its id
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/parameters/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/productResponse/200'
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '../components/'
+#        #                description: OK
+#
+#        404:
+#          #      $ref: '#/components/responses/404'
+#          description: OK
+

@@ -22,6 +22,8 @@ class ProductResource extends JsonResource
             "rating" => $this->rating,
             "image_path" => $this->image_path,
             "attributes" => AttributeResource::collection($this->whenLoaded('attributes')),
+            "discount" => $this->whenLoaded('discount', new DiscountResource($this->discount)),
+            "brand" => new BrandResource($this->brand),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at
 

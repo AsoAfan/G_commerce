@@ -12,10 +12,10 @@ return new class extends Migration {
     {
         Schema::create('rating', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid("product_id")->constrained()->cascadeOnDelete();
-            $table->foreignUuid("user_id")->constrained()->cascadeOnDelete();
             $table->double("rating", 3, 2);
             $table->text("review")->nullable();
+            $table->foreignUuid("product_id")->constrained()->cascadeOnDelete();
+            $table->foreignUuid("user_id")->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -51,6 +51,8 @@ User:
       format: timestamp
       example: 2024-01-06T21:09:55.000000Z | NULL
 Product:
+  description: <a href="/img/ProductMigration.png" target="_blank">Product Migration Code</a>
+
   type: object
   properties:
     id:
@@ -82,14 +84,14 @@ Product:
       $ref: '#/Attribute'
 
 Attribute:
+  description: <a href="/img/AttributeMigration.png" target="_blank">Attribute Migration Code</a>
   type: array
   items:
     type: object
     properties:
-
       id:
         type: integer
-        example: 1
+        example: 11
       name:
         type: string
         example: color
@@ -99,7 +101,9 @@ Attribute:
       display_type:
         type: string
         example: RadioButton
+
 Discount:
+  description: <a href="/img/DiscountMigration.png" target="_blank">Discount Migration Code</a>
   type: object
   properties:
     id:
@@ -114,8 +118,9 @@ Discount:
     expires_at:
       type: string
       example: 2024-02-3 00:00:00
-
 Brand:
+  description: <a href="/img/BrandMigration.png" target="_blank">Brand Migration Code</a>
+
   type: object
   properties:
     id:
@@ -123,4 +128,4 @@ Brand:
       example: 27
     name:
       type: string
-      example: Adidas
+      example: Samsung

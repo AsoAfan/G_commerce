@@ -2,7 +2,7 @@ const dedent = require("dedent")
 
 describe("feature: `example` field support", function () {
 
-  describe("Swagger 2", function() {
+  describe("Swagger 2", function () {
 
     beforeEach(function (client, done) {
       client
@@ -25,30 +25,30 @@ describe("feature: `example` field support", function () {
     })
 
     // Parameters
-      // Supports complex root `example` values in Schema objects for bodies
-      // Supports nested `example` values in Schema objects for bodies
+    // Supports complex root `example` values in Schema objects for bodies
+    // Supports nested `example` values in Schema objects for bodies
 
-    describe("primitive parameters", function() {
+    describe("primitive parameters", function () {
       it("should respect a primitive x-example value", function (client) {
         client
           .click("button.try-out__btn")
           .assert.value(
-            `tr[data-param-name="ValidParam"] input[type="text"]`,
-            `12345`
-          )
+          `tr[data-param-name="ValidParam"] input[type="text"]`,
+          `12345`
+        )
       })
       it("should ignore a primitive example value", function (client) {
         client
           .click("button.try-out__btn")
           .assert.value(
-            `tr[data-param-name="NotValidParam"] input[type="text"]`,
-            ``
-          )
+          `tr[data-param-name="NotValidParam"] input[type="text"]`,
+          ``
+        )
       })
     })
 
-    describe("object parameters", function() {
-      it("should correctly consider property-level schema examples", function(client) {
+    describe("object parameters", function () {
+      it("should correctly consider property-level schema examples", function (client) {
         client.assert.containsText(`div[data-param-name="body"] pre`,
           dedent(`
             {
@@ -61,7 +61,7 @@ describe("feature: `example` field support", function () {
           `)
         )
       })
-      it("should correctly consider root schema-level schema examples", function(client) {
+      it("should correctly consider root schema-level schema examples", function (client) {
         client.assert.containsText(`div[data-param-name="body2"] pre`,
           dedent(`
             {
@@ -71,7 +71,7 @@ describe("feature: `example` field support", function () {
           `)
         )
       })
-      it("should correctly consider nested schema-level schema examples", function(client) {
+      it("should correctly consider nested schema-level schema examples", function (client) {
         client.assert.containsText(`div[data-param-name="body3"] pre`,
           dedent(`
             {
@@ -85,7 +85,7 @@ describe("feature: `example` field support", function () {
       })
     })
 
-    describe("responses", function() {
+    describe("responses", function () {
       it("should correctly consider schema-level examples", function (client) {
         client.assert.containsText(`tr.response[data-code="201"] pre`,
           dedent(`
@@ -120,7 +120,7 @@ describe("feature: `example` field support", function () {
       })
     })
   })
-  describe("OpenAPI 3.0", function() {
+  describe("OpenAPI 3.0", function () {
     beforeEach(function (client, done) {
       client
         .url("localhost:3230")
@@ -128,7 +128,7 @@ describe("feature: `example` field support", function () {
 
       client.waitForElementVisible(".download-url-input:not([disabled])", 5000)
         .clearValue(".download-url-input")
-        .setValue(".download-url-input", "/test-specs/features/example.openapi.yaml")
+        .setValue(".download-url-input", "/test-specs/features/example.api-docs.yaml")
         .click("button.download-url-button")
         .waitForElementVisible(".opblock-summary-description", 10000)
         .click("#operations-agent-editAgent")
@@ -137,56 +137,56 @@ describe("feature: `example` field support", function () {
       done()
     })
 
-    describe("parameters", function() {
-      it("should respect a primitive example value", function(client) {
+    describe("parameters", function () {
+      it("should respect a primitive example value", function (client) {
         client
           .click("button.try-out__btn")
           .assert.value(
-            `div.parameters-container > div > table > tbody > tr > td.col.parameters-col_description > input[type="text"]`,
-            `12345`
-          )
+          `div.parameters-container > div > table > tbody > tr > td.col.parameters-col_description > input[type="text"]`,
+          `12345`
+        )
       })
     })
 
-    describe("request bodies", function() {
+    describe("request bodies", function () {
       it("should correctly consider media type-level examples", function (client) {
         client
           .click(`select.content-type option[value="application/json_media-type-level"]`)
           .assert.containsText(`pre.body-param__example`,
-            dedent(`
+          dedent(`
               {
                 "code": "AE1",
                 "name": "Andrew"
               }
             `)
-          )
+        )
       })
       it("should correctly consider schema-level examples", function (client) {
         client
           .click(`select.content-type option[value="application/json_schema-level"]`)
           .assert.containsText(`pre.body-param__example`,
-            dedent(`
+          dedent(`
               {
                 "code": "AE1",
                 "name": "Andrew"
               }
             `)
-          )
+        )
       })
       it("should correctly consider property-level examples", function (client) {
         client
           .click(`select.content-type option[value="application/json_property-level"]`)
           .assert.containsText(`pre.body-param__example`,
-            dedent(`
+          dedent(`
               {
                 "code": "AE1",
                 "name": "Andrew"
               }
             `)
-          )
+        )
       })
     })
-    describe("responses", function() {
+    describe("responses", function () {
       it("should correctly consider media type-level examples", function (client) {
         client.assert.containsText(`tr.response[data-code="200"] pre`,
           dedent(`

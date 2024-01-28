@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthSessionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user',[\App\Http\Controllers\AuthSessionController::class, 'show']);
+    Route::get('/user', [AuthSessionController::class, 'show']);
 
-    Route::post('logout', [\App\Http\Controllers\AuthSessionController::class, 'destroy']);
+    Route::post('logout', [AuthSessionController::class, 'destroy']);
 });

@@ -6,12 +6,13 @@ products-create:
     tags:
       - Products
     requestBody:
-      $ref: '../components/requestBodies.yaml#/create-product'
+      $ref: '../components/requestBodies.yaml#/productRequest/create'
     responses:
       201:
-        $ref: '../components/responses.yaml#/general/201'
+        $ref: '../components/responses.yaml#/generalResponse/201'
       422:
-        $ref: '../components/responses.yaml#/general/422'
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
 products-{id}:
   get:
     summary: Get one product
@@ -19,18 +20,7 @@ products-{id}:
     tags:
       - Products
     parameters:
-      - $ref: '../components/parameters.yaml#/parameters/id'
+      - $ref: '../components/parameters.yaml#/id'
     responses:
       200:
         $ref: '../components/responses.yaml#/productResponse/200'
-#          description: OK
-#          content:
-#            application/json:
-#              schema:
-#                $ref: '../components/'
-#        #                description: OK
-#
-#        404:
-#          #      $ref: '#/components/responses/404'
-#          description: OK
-

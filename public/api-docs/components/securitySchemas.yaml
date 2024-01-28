@@ -1,0 +1,5 @@
+ApiKey:
+  description: use `Bearer ${token}`
+  type: http
+  scheme: bearer
+  name: "Authorization"

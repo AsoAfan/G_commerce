@@ -1,0 +1,17 @@
+discounts-create:
+  post:
+    summary: Creates new discount(This endpoint may be removed later)
+    description: creates new Discount.
+      <a href = "http://127.0.0.1:8000/img/NewDiscount.png" target="_blank">See Code Snippet</a>
+
+    tags:
+      - Discounts
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/discountRequest/create'
+
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/generalResponse/201'
+
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'

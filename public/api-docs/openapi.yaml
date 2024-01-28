@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+  title: G_Commerce
+  description: Api docs for G_Commerce intern project
+  version: 1.3.0
+servers:
+  - url: 'http://127.0.0.1:8000/api'
+  - url: "https://"
+
+components:
+  schemas:
+    Attribute:
+      $ref: './components/schemas.yaml#/Attribute'
+    Brand:
+      $ref: './components/schemas.yaml#/Brand'
+    Discount:
+      $ref: './components/schemas.yaml#/Discount'
+    Product:
+      $ref: './components/schemas.yaml#/Product'
+    User:
+      $ref: './components/schemas.yaml#/User'
+  securitySchemes:
+    ApiKey:
+      $ref: './components/securitySchemas.yaml#/ApiKey'
+
+paths:
+  /register:
+    $ref: './paths/user.yaml#/register'
+
+  /verify/{slug}:
+    $ref: './paths/user.yaml#/verify-{slug}'
+
+  /verify/resend:
+    $ref: './paths/user.yaml#/verify-resend'
+
+  /login:
+    $ref: './paths/user.yaml#/login'
+
+  /logout:
+    $ref: './paths/user.yaml#/logout'
+
+  /brands/create:
+    $ref: './paths/brands.yaml#/brands-create'
+
+  /discounts/create:
+    $ref: './paths/discounts.yaml#/discounts-create'
+
+  /products/create:
+    $ref: './paths/products.yaml#/products-create'
+
+  /products/{id}:
+    $ref: "./paths/products.yaml#/products-{id}"
+
+  /user:
+    $ref: './paths/user.yaml#/user'

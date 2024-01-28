@@ -1,0 +1,10 @@
+id:
+  name: id
+  in: query
+  required: true
+  allowEmptyValue: false
+
+slug:
+  name: slug
+  in: path
+  required: true

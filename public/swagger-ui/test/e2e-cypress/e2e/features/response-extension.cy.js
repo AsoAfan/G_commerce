@@ -18,13 +18,13 @@ describe("Response extension feature", () => {
           .should("have.text", "x-error: true")
 
         page.get("tr.response[data-code='404'] td.response-col_description div.response__extension:nth-child(3)")
-        .should("have.text", "x-error-codes: List [ \"NOT_FOUND\" ]")
+          .should("have.text", "x-error-codes: List [ \"NOT_FOUND\" ]")
       })
     })
   })
 
   describe("in OpenAPI 3", () => {
-    const openAPI3BaseUrl = "/?showExtensions=true&docExpansion=full&url=/documents/features/response-extension.openapi.yaml"
+    const openAPI3BaseUrl = "/?showExtensions=true&docExpansion=full&url=/documents/features/response-extension.api-docs.yaml"
 
     describe("without x- values", () => {
       it("should omit response extensions section", () => {
@@ -42,7 +42,7 @@ describe("Response extension feature", () => {
           .should("have.text", "x-error: true")
 
         page.get("tr.response[data-code='404'] td.response-col_description div.response__extension:nth-child(3)")
-        .should("have.text", "x-error-codes: List [ \"NOT_FOUND\" ]")
+          .should("have.text", "x-error-codes: List [ \"NOT_FOUND\" ]")
       })
     })
   })

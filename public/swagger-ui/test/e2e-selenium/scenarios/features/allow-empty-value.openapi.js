@@ -6,7 +6,7 @@ describe("feature: OpenAPI 3 allowEmptyValue", function () {
 
     client.waitForElementVisible(".download-url-input:not([disabled])", 5000)
       .clearValue(".download-url-input")
-      .setValue(".download-url-input", "/test-specs/features/allow-empty-value.openapi.yaml")
+      .setValue(".download-url-input", "/test-specs/features/allow-empty-value.api-docs.yaml")
       .click("button.download-url-button")
       .waitForElementVisible(".opblock", 10000)
 

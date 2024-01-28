@@ -1,5 +1,5 @@
-import { fromJS } from "immutable"
-import { isOAS30, isSwagger2 } from "core/plugins/oas3/helpers"
+import {fromJS} from "immutable"
+import {isOAS30, isSwagger2} from "core/plugins/oas3/helpers"
 
 const isOAS3Shorthand = (version) => isOAS30(fromJS({
   openapi: version
@@ -30,7 +30,7 @@ describe("isOAS3", function () {
     expect(isOAS3Shorthand(null)).toEqual(false)
   })
 
-  it("should gracefully fail when `openapi` field is missing", function () {
+  it("should gracefully fail when `api-docs` field is missing", function () {
     expect(isOAS30(fromJS({
       openApi: "3.0.0"
     }))).toEqual(false)

@@ -1,0 +1,157 @@
+productRequest:
+  create:
+    description: Note that each attribute is an object of attribute_name and its display_type as keys with their values
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Galaxy tab s9 ultra"
+            description:
+              type: string
+              example: "a tablet made by samsung"
+            price:
+              type: number
+              example: 1199.99
+            currency:
+              type: string
+              maximum: 3
+              example: "$"
+            image_path:
+              type: string
+              example: "path/to/image/file.png"
+            image_name:
+              type: string
+              example: "file.png"
+            attributes:
+              type: array
+              items:
+                type: object
+                properties:
+                  attribute_name:
+                    type: string
+                    example: attribute_value
+                    required: true
+                  display_type:
+                    type: string
+                    required: true
+                    example: radioButton
+
+
+            brand_id:
+              type: integer
+              example: 3
+            category_id:
+              type: integer
+              example: 5
+            discount_id:
+              type: string
+              pattern: '^[0-9a-fA-F\-]{36}$'
+            sub_category_ids:
+              type: array
+              example:
+                - 27
+                - 51
+            group_ids:
+              type: array
+              example:
+                - 33
+                - 79
+
+          required:
+            - name
+            - description
+            - price
+            - currency
+            - image_path
+            - image_name
+            - attributes
+userRequest:
+  register:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            # $ref: '#/userRequest/login'
+            email:
+              type: string
+              format: email
+              example: "jonDoe@example.com"
+
+            password:
+              type: string
+              minimum: 8
+              example: "password"
+
+            password_confirmation:
+              type: string
+              description: Same as password
+              example: "password"
+
+  login:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+              example: "jonDoe@example.com"
+            password:
+              type: string
+              example: "password"
+  verify-{slug}:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            secret:
+              type: string
+              example: "539159"
+  verify-resend:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+              example: "JonDoe@example.com"
+
+discountRequest:
+  create:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            ratio:
+              type: number
+              example: 85
+            starts_at:
+              type: string
+              default: now()
+              example: 2024-01-024T21:09:55.000000Z
+            expires_at:
+              type: string
+              example: 2024-01-024T21:09:55.000000Z
+
+
+generalRequest:
+  nameOnly:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: brand_name

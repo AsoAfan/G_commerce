@@ -1,0 +1,202 @@
+productResponse:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          $ref: './schemas.yaml#/Product'
+
+
+userResponse:
+  verify-{slug}:
+    200:
+      description: Email verified successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: "JonDoe@example.com Verified successfully"
+              code:
+                type: integer
+                example: 200
+              data:
+                example:
+                  - time:2024-01-06T21:09:55.000000Z
+
+  emailSent:
+    200:
+      description: verification email has been sent
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: verify Email sent
+              data:
+                type: string
+                example: 2y10btzqnvt8tyy5qwyokuzydgbnmebxa9pwnmdalqkzqgczzmnzi9
+              code:
+                type: integer
+                example: 200
+
+  login:
+    200:
+      description: Token successfully generated
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Login Succeed
+              code:
+                type: integer
+                example: 200
+              data:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: 1|oztvQfLoaWqHwpikri0XEPPUAVe4NaccyGeqZnk79e78df81
+                  user:
+                    $ref: './schemas.yaml#/User'
+    400:
+      description: E-mail or Password is invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid credentials
+              code:
+                type: integer
+                example: 400
+    403:
+      description: Email not verified
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Verify email first
+              code:
+                type: integer
+              data:
+                type: array
+                example:
+                  - email:JonDoe@example.com
+
+  logout:
+    200:
+      description: Logout succeed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Logout succeed.
+              code:
+                type: integer
+                example: 200
+
+  user:
+    200:
+      description: Data returned(OK)
+      content:
+        application/json:
+          schema:
+            $ref: './schemas.yaml#/User'
+
+
+generalResponse:
+  201:
+    description: <item> created successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: <item_name> created successfully
+            code:
+              type: integer
+              example: 201
+  202:
+    description: nothing to do
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "JoeDoe@example.com is already Verified"
+            code:
+              type: integer
+              example: 202
+  401:
+    description: Token is not set
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Unauthenticated.
+  404:
+    description: Not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Requested Data can not be found
+            code:
+              type: integer
+              example: 404
+  422:
+    description: Validation failed
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Validation failed
+            errors:
+              type: array
+              example:
+                - <The_validation_for_rule_failed>.
+            code:
+              type: integer
+              example: 422
+  429:
+    description: "It is enough for now, take a rest"
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: To many requests try again later
+            code:
+              type: integer
+              example: 429

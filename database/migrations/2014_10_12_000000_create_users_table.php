@@ -16,7 +16,7 @@ return new class extends Migration {
                 $table->string('google_id')->nullable();
                 $table->string('facebook_id')->nullable();
             */
-            $table->string('username');
+            $table->string('username')->nullable();
             $table->string('email')->unique();
             $table->string('phone_number')->unique()->nullable();
             $table->string('image_path')->nullable();

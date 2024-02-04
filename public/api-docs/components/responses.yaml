@@ -1,4 +1,5 @@
 productResponse:
+
   200:
     description: OK
     content:
@@ -119,8 +120,56 @@ userResponse:
           schema:
             $ref: './schemas.yaml#/User'
 
+paginatedResponse:
+  200:
+    description: Operation succeed
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: <Succeed message>
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  NOTE:
+                    type: string
+                    example: This data can be vary depending on the model described in Schemas section below
+            meta:
+              type: object
+              properties:
+                hasNextPage:
+                  type: boolean
+                  example: true
+            code:
+              type: number
+              example: 200
+
 
 generalResponse:
+  200:
+    description: Operation succeed
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: <Succeed message>
+            data:
+              type: array
+              items:
+                $ref: '../components/schemas.yaml#/Discount'
+            code:
+              type: number
+              example: 200
+
+
   201:
     description: <item> created successfully
     content:
@@ -131,6 +180,14 @@ generalResponse:
             message:
               type: string
               example: <item_name> created successfully
+            data:
+              type: object
+              description: id type is vary depending on model
+              properties:
+                id:
+                  type: string
+                  example: 9b397a94-4797-4697-948b-a590f476128b
+
             code:
               type: integer
               example: 201
@@ -166,7 +223,7 @@ generalResponse:
           properties:
             message:
               type: string
-              example: Requested Data can not be found
+              example: Not found
             code:
               type: integer
               example: 404

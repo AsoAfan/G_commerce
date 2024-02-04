@@ -9,6 +9,13 @@ class Category extends Model
 {
     use HasFactory;
 
+    protected $table = "categories";
+
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
+    }
+
 
     public function subCategories()
     {

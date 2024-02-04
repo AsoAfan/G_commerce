@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBrandRequest;
 use App\Models\Brand;
-use Illuminate\Http\Request;
 
 class BrandController extends Controller
 {
@@ -12,10 +11,14 @@ class BrandController extends Controller
     {
 
         $newBrand = Brand::create([
-           'name' => $request->post('name')
+            'name' => $request->post('name')
         ]);
 
-        return response(['message' => ucfirst($newBrand->name) . " brand created successfully", 'code' => 201], 201);
+        return response([
+            'message' => ucfirst($newBrand->name) . " brand created successfully",
+            'data' => $newBrand->id,
+            'code' => 201
+        ], 201);
 
     }
 

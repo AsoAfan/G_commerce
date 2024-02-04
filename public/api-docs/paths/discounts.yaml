@@ -15,3 +15,19 @@ discounts-create:
 
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
+
+discounts:
+  get:
+    summery: Get all discounts
+    description: Retrieve all discounts with pagination
+    parameters:
+      - $ref: '../components/parameters.yaml#/page'
+      - $ref: '../components/parameters.yaml#/limit'
+    tags:
+      - Discounts
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/paginatedResponse/200'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'

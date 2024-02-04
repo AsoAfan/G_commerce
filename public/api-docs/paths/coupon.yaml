@@ -1,0 +1,34 @@
+coupon-create:
+  post:
+    summery: Create a coupon
+    description: Create a coupon valid for limited date
+    tags:
+      - Coupons
+
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/couponRequest/create'
+
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/generalResponse/201'
+
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+coupons:
+  get:
+    summery: ""
+    description: Get all coupons with pagination
+    tags:
+      - Coupons
+    parameters:
+      - $ref: '../components/parameters.yaml#/page'
+      - $ref: '../components/parameters.yaml#/limit'
+    
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/paginatedResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'

@@ -1,3 +1,20 @@
+products:
+  get:
+    summery: ''
+    description: Get all Products with pagination
+
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/page'
+      - $ref: '../components/parameters.yaml#/limit'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/paginatedResponse/200'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
 products-create:
   post:
     summary: Creates new product
@@ -24,3 +41,17 @@ products-{id}:
     responses:
       200:
         $ref: '../components/responses.yaml#/productResponse/200'
+
+products-rate-{id}:
+  post:
+    summery: ""
+    description: Rate the product and leave your review
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/productRequest/rate'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/200'

@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -25,7 +26,6 @@ class User extends Authenticatable
     ];
 
 
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -34,6 +34,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'pivot',
         'otp_code',
         'otp_secret',
         'otp_slug',
@@ -56,24 +57,28 @@ class User extends Authenticatable
         $this->belongsTo(Location::class);
     }
 
-
-
-    public function otp()
+    public function ratings(): BelongsToMany
     {
-        return $this->hasOne(Otp::class);
-
+        return $this->belongsToMany(Product::class, 'ratings');
     }
 
+    /*
+            public function otp()
+        {
+            return $this->hasOne(Otp::class);
+
+        }
+    */
 
 
-    function setPasswordAttribute($value)
+    function setPasswordAttribute($value): void
     {
 
         $this->attributes['password'] = bcrypt($value);
 
     }
 
-    function setRoleAttribute($value)
+    function setRoleAttribute($value): void
     {
 
         $this->attributes['role'] = strtolower($value);

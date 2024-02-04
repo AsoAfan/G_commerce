@@ -1,0 +1,35 @@
+subcategories-create:
+  post:
+    summery:
+    description: Create subcategory associated with a category
+    tags:
+      - Subcategories
+
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/subcategoryRequest/create'
+
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/generalResponse/201'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+subcategories:
+  get:
+    summery: ""
+    description: Get all subcategories of specific category
+    tags:
+      - Subcategories
+    parameters:
+      - $ref: '../components/parameters.yaml#/page'
+      - $ref: '../components/parameters.yaml#/limit'
+      - $ref: '../components/parameters.yaml#/slug'
+    
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/paginatedResponse/200'
+#      - $ref: '../components/parameters.yaml#/slug'
+
+
+
+

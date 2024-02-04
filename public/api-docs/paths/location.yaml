@@ -1,0 +1,15 @@
+locations-create:
+  post:
+    summery:
+    description: Create new location for authenticated user
+    tags:
+      - Locations
+
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/locationRequest/create'
+
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/generalResponse/201'
+
+

@@ -1,0 +1,34 @@
+groups-create:
+  post:
+    summery: Creates new group
+    description: Create a group of products and apply discount for them
+    tags:
+      - Groups
+
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/groupRequest/create'
+
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/generalResponse/201'
+
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+groups:
+  get:
+    summery: ""
+    description: Get all groups with pagination
+    tags:
+      - Groups
+    parameters:
+      - $ref: '../components/parameters.yaml#/page'
+      - $ref: '../components/parameters.yaml#/limit'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/paginatedResponse/200'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'

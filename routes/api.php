@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,13 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/products/{product}', [ProductController::class, 'show']);
-
 
 Route::group(['middleware' => 'jsonify'], function () {
 
-require_once __DIR__ . '/api/auth.php';
-require_once __DIR__ . '/api/guest.php';
+    require_once __DIR__ . '/api/auth.php';
+    require_once __DIR__ . '/api/guest.php';
 
 
 });

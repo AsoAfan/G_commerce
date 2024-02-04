@@ -13,10 +13,16 @@ components:
       $ref: './components/schemas.yaml#/Attribute'
     Brand:
       $ref: './components/schemas.yaml#/Brand'
+    Category:
+      $ref: './components/schemas.yaml#/Category'
     Discount:
       $ref: './components/schemas.yaml#/Discount'
+    Group:
+      $ref: './components/schemas.yaml#/Group'
     Product:
       $ref: './components/schemas.yaml#/Product'
+    Rating:
+      $ref: './components/schemas.yaml#/Rating'
     User:
       $ref: './components/schemas.yaml#/User'
   securitySchemes:
@@ -42,14 +48,45 @@ paths:
   /brands/create:
     $ref: './paths/brands.yaml#/brands-create'
 
+  /categories/create:
+    $ref: './paths/categories.yaml#/categories-create'
+
+  /categories:
+    $ref: './paths/categories.yaml#/categories'
+
+  /coupons/create:
+    $ref: './paths/coupon.yaml#/coupon-create'
+  /coupons:
+    $ref: './paths/coupon.yaml#/coupons'
+
   /discounts/create:
     $ref: './paths/discounts.yaml#/discounts-create'
+  /discounts:
+    $ref: './paths/discounts.yaml#/discounts'
 
+  /groups/create:
+    $ref: './paths/groups.yaml#/groups-create'
+  /groups:
+    $ref: './paths/groups.yaml#/groups'
+
+  /locations/create:
+    $ref: './paths/location.yaml#/locations-create'
+
+  /products:
+    $ref: './paths/products.yaml#/products'
   /products/create:
     $ref: './paths/products.yaml#/products-create'
-
   /products/{id}:
     $ref: "./paths/products.yaml#/products-{id}"
+  /products/rate/{id}:
+    $ref: './paths/products.yaml#/products-rate-{id}'
+
+  /subcategories/create:
+    $ref: './paths/subcategories.yaml#/subcategories-create'
+  /{slug:category}/subcategories:
+    $ref: './paths/subcategories.yaml#/subcategories'
+  #  /{slug:category}/{slug:subcategory}:
+  #    $ref: './paths/subcategories.yaml#/subcategories'
 
   /user:
     $ref: './paths/user.yaml#/user'

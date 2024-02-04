@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreCategoryRequest extends FormRequest
 {
@@ -11,7 +13,8 @@ class StoreCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+//        return auth()->user()->role;
+        return true;
     }
 
     /**
@@ -23,7 +26,18 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'slug' => ['required', 'unique:category,slug'] // TODO: Using this (required) or name[25](not required)
+            'slug' => ['required', 'unique:categories,slug'], // TODO: Using this (required) or its name => (not required)
+            'discount_id' => ['exists:discounts,id']
         ];
     }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response([
+            'message' => 'Validation failed',
+            'errors' => $validator->errors()->all(),
+            'code' => 422
+        ], 422));
+    }
+
 }

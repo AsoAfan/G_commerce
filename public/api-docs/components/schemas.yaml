@@ -76,12 +76,32 @@ Product:
     image_name:
       type: string
       example: file.png
+    count_rating:
+      description: Number of rating the product has
+      type: number
+      example: 175
+    avg_rating:
+      description: Average rating of the product
+      type: number
+      example: 3
     brand:
       $ref: '#/Brand'
     discount:
       $ref: '#/Discount'
     attributes:
       $ref: '#/Attribute'
+    rating:
+      $ref: '#/Rating'
+
+    created_at:
+      type: string
+      format: date
+      example: "2024-02-01T21:00:56.000000Z"
+
+    updated_at:
+      type: string
+      format: date
+      example: "2024-02-01T21:00:56.000000Z"
 
 Attribute:
   description: <a href="/img/AttributeMigration.png" target="_blank">Attribute Migration Code</a>
@@ -114,10 +134,10 @@ Discount:
       example: 60
     starts_at:
       type: string
-      example: 2024-01-26 17:35:13
+      example: "2024-01-26 17:35:13"
     expires_at:
       type: string
-      example: 2024-02-3 00:00:00
+      example: "2024-02-3 00:00:00"
 Brand:
   description: <a href="/img/BrandMigration.png" target="_blank">Brand Migration Code</a>
 
@@ -129,3 +149,76 @@ Brand:
     name:
       type: string
       example: Samsung
+
+Group:
+  description: Group migration file
+  type: object
+  properties:
+    name:
+      type: string
+      example: half discount
+
+    discount_id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+
+    end_date:
+      type: string
+      example: "2024-01-024T21:09:55.000000Z"
+
+Rating:
+  type: object
+  properties:
+    id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+
+    username:
+      type: string
+      example: Jon Doe
+
+    image_path:
+      type: string
+      example: path/to/image.png
+
+    image_name:
+      type: string
+      example: image.png
+
+    rating:
+      type: number
+      example: 4.5
+
+    review:
+      type: string
+      example: Good Ipad
+
+Category:
+  type: object
+  properties:
+    name:
+      type: string
+      example: Technology
+    slug:
+      type: string
+      example: tech
+    image_path:
+      type: string
+      example: path/to/image.png
+    image_name:
+      type: string
+      example: image.png
+
+
+GenericPaginated:
+
+  type: object
+  properties:
+    NOTE:
+      type: string
+      example: This data can be vary depending on the model Refer to schema section
+
+
+
+
+

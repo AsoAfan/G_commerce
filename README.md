@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 <p align="center">
-<a href="https://www.gigant.tech" target="_blank"><img src="./public/Img/GigantLogo.png" height="200" alt="Gigants Logo"></a>
+<a href="https://www.gigant.tech" target="_blank">
+<img src="./public/Img/GigantLogo.png" height="200" alt="Gigants Logo">
 <h1 align="center">Gigant Tech</h1>
-=======
-<p align="center"><a href="https://gigant.tech" target="_blank"><img src="./public/Img/GigantLogo.png" height="200" alt="Laravel Logo"></a></p>
->>>>>>> temp
-
-
-
+</a>
 
 # G_Commerce
 
@@ -63,9 +58,4 @@ php artisan serve
 
 Happy coding 🥰
 
-<<<<<<< HEAD
-=======
 &copy; 2024 by [Gigant Technology](https://www.gigant.tech/), inc.
->>>>>>> temp
-
-Copyright © 2024 by [Gigant Technology](https://www.gigant.tech).

@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  title: G_Commerce
+  description: Api docs for G_Commerce intern project
+  version: 1.3.0
+servers:
+  - url: 'http://127.0.0.1:8000/api'
+  - url: "https://"
+
+
+paths:
+  /users:
+    post:
+      summary: Creates a user and returns the user ID
+      operationId: createUser
+      requestBody:
+        required: true
+        description: A JSON object that contains the user name and age.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    description: ID of the created user.
+          # -----------------------------------------------------
+          # Links
+          # -----------------------------------------------------
+          links:
+            GetUserByUserId: # <---- arbitrary name for the link
+              operationId: getUser
+              # or
+              # operationRef: '#/paths/~1users~1{userId}/get'
+              parameters:
+                userId: '$response.body#/id'
+              description: >
+                The `id` value returned in the response can be used as
+                the `userId` parameter in `GET /users/{userId}`.
+          # -----------------------------------------------------
+  /users/{userId}:
+    get:
+      summary: Gets a user by ID
+      operationId: getUser
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: A User object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          readOnly: true
+        name:
+          type: string

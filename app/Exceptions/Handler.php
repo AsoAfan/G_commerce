@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -23,8 +24,17 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
+
+        $this->renderable(function (NotFoundException $e, Request $request) {
+
+            return response([
+                'message' => "Not found", 'code' => 404
+            ], 404);
+        });
+
         $this->reportable(function (Throwable $e) {
             //
         });
+
     }
 }

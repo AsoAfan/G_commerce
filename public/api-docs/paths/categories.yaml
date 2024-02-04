@@ -1,0 +1,33 @@
+categories:
+  get:
+    summery: ""
+    description: Get all categories with their discounts
+    tags:
+      - Categories
+    parameters:
+      - $ref: '../components/parameters.yaml#/page'
+      - $ref: '../components/parameters.yaml#/limit'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/paginatedResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+categories-create:
+  post:
+    summery: Create new category
+    description: Create new category
+    tags:
+      - Categories
+
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/categoryRequest/create'
+
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/generalResponse/201'
+
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'

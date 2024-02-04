@@ -50,6 +50,6 @@ class AuthSessionController extends Controller
 
 //        Auth::user()->tokens()->latest()->first()->delete();
 
-        return ['message' => "Logout succeed"];
+        return ['message' => "Logout succeed", 'code' => 200];
     }
 }

@@ -1,0 +1,27 @@
+brands-create:
+  post:
+    summary: Creates new brand
+    description: creates new brand with its name.
+      <a href = "http://127.0.0.1:8000/img/NewBrand.png" target="_blank">See Code Snippet</a>
+
+    tags:
+      - Brands
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/generalRequest/nameOnly'
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/generalResponse/201'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+
+#      200:
+#        description: Brand created successfully
+#        content:
+#          application/json:
+#            schema:
+#              type: object
+#              properties:
+#                message:
+#                  type: string
+#                  example:

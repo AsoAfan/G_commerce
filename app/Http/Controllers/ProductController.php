@@ -2,22 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetResourcesRequest;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\StoreRatingRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Attribute;
 use App\Models\Product;
-use Illuminate\Support\Str;
+use App\Models\Rating;
+use App\Services\PaginationService;
 
 class ProductController extends Controller
 {
 
-    public function index()
+    public function index(PaginationService $paginationService, GetResourcesRequest $request)
     {
-//        return Product::all();
-        return ProductResource::collection(Product::all());
-    }
+//        return Product::query()->filter([]);
 
+//        dd($request->input('$test'));
+//        DB::enableQueryLog();
+        ['data' => $data, 'hasNextPage' => $hasNext] = $paginationService->paginate(
+
+            Product::query()->filter(request(['s', 'attribute']))
+                ->withCount('ratings')
+            , ['ratings', 'brand', 'discount']);
+
+//        return (DB::getQueryLog());
+
+        return [
+            'message' => 'succeed',
+            'data' => ProductResource::collection($data),
+            'meta' => ['hasNextPage' => $hasNext],
+            'code' => 200
+        ];
+    }
 
 
     public function store(StoreProductRequest $request)
@@ -40,35 +58,69 @@ class ProductController extends Controller
 
         ]);
 
-        $newProduct->group()->attach($request->post('group_ids'));
+
+        $newProduct->groups()->attach($request->post('group_ids'));
         $newProduct->subCategories()->attach($request->post('sub_category_ids'));
 
 //        TODO: can be better(no loop)?
-
+        /*
+         *
+         * [
+         *  "jsjs": sih
+         *
+         * */
 //        ['color' : 'red']
         foreach ($request->post('attributes') as $attribute) {
 //            dd($attribute);
-            $newAttribute = Attribute::where('name', key($attribute))->first();
+            $newAttribute = Attribute::firstOrCreate(['name' => key($attribute)]);
+//            $newAttribute = Attribute::where('name', key($attribute))->first();
 
-            if (! $newAttribute) $newAttribute = Attribute::create(['name' => key($attribute)]);
+//            if (! $newAttribute) $newAttribute = Attribute::create(['name' => key($attribute)]);
 
             $newProduct->attributes()->attach($newAttribute, [
                 'value' => $attribute[key($attribute)],
                 'display_type' => $attribute['display_type']
             ]);
         }
+        return response([
+            'message' => strtok($newProduct->name, ' ') . " Added successfully",
+            'code' => 201
+        ], 201);
+    }
 
 
-        return ['message' => Str::substr($newProduct->name, 0, 12) . " Added successfully", 'code' => 200];
+    public function rate(Product $product, StoreRatingRequest $request)
+    {
+
+        $rating = Rating::create([
+            'rating' => $request->post('rating'),
+            'review' => $request->post('review')
+        ]);
+
+        $product->ratings()->attach($rating);
+        return response([
+            'message' => "Thank you for your feedback",
+            'data' => ['id' => $rating->id],
+            'code' => 200
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+//        dd($id);
+
+
+        $product = Product::where('id', $id)->first();
+        if (!$product)
+            return response(['message' => "Not found", 'code' => 404], 404);
+
+        $product->with(['brand', 'discount']);
+        return new ProductResource($product);
     }
+
 
     /**
      * Update the specified resource in storage.

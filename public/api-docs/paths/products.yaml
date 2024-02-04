@@ -1,0 +1,57 @@
+products:
+  get:
+    summery: ''
+    description: Get all Products with pagination
+
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/page'
+      - $ref: '../components/parameters.yaml#/limit'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/paginatedResponse/200'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+products-create:
+  post:
+    summary: Creates new product
+    description: creates new product with its attributes and there value.
+      <a href = "http://127.0.0.1:8000/img/NewProduct.png" target="_blank">See Code Snippet</a>
+    tags:
+      - Products
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/productRequest/create'
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/generalResponse/201'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+products-{id}:
+  get:
+    summary: Get one product
+    description: Retrieve one product with its id
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/productResponse/200'
+
+products-rate-{id}:
+  post:
+    summery: ""
+    description: Rate the product and leave your review
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/productRequest/rate'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/200'

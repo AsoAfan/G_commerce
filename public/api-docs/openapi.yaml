@@ -1,0 +1,92 @@
+openapi: 3.0.3
+info:
+  title: G_Commerce
+  description: Api docs for G_Commerce intern project
+  version: 1.3.0
+servers:
+  - url: 'http://127.0.0.1:8000/api'
+  - url: "https://"
+
+components:
+  schemas:
+    Attribute:
+      $ref: './components/schemas.yaml#/Attribute'
+    Brand:
+      $ref: './components/schemas.yaml#/Brand'
+    Category:
+      $ref: './components/schemas.yaml#/Category'
+    Discount:
+      $ref: './components/schemas.yaml#/Discount'
+    Group:
+      $ref: './components/schemas.yaml#/Group'
+    Product:
+      $ref: './components/schemas.yaml#/Product'
+    Rating:
+      $ref: './components/schemas.yaml#/Rating'
+    User:
+      $ref: './components/schemas.yaml#/User'
+  securitySchemes:
+    ApiKey:
+      $ref: './components/securitySchemas.yaml#/ApiKey'
+
+paths:
+  /register:
+    $ref: './paths/user.yaml#/register'
+
+  /verify/{slug}:
+    $ref: './paths/user.yaml#/verify-{slug}'
+
+  /verify/resend:
+    $ref: './paths/user.yaml#/verify-resend'
+
+  /login:
+    $ref: './paths/user.yaml#/login'
+
+  /logout:
+    $ref: './paths/user.yaml#/logout'
+
+  /brands/create:
+    $ref: './paths/brands.yaml#/brands-create'
+
+  /categories/create:
+    $ref: './paths/categories.yaml#/categories-create'
+
+  /categories:
+    $ref: './paths/categories.yaml#/categories'
+
+  /coupons/create:
+    $ref: './paths/coupon.yaml#/coupon-create'
+  /coupons:
+    $ref: './paths/coupon.yaml#/coupons'
+
+  /discounts/create:
+    $ref: './paths/discounts.yaml#/discounts-create'
+  /discounts:
+    $ref: './paths/discounts.yaml#/discounts'
+
+  /groups/create:
+    $ref: './paths/groups.yaml#/groups-create'
+  /groups:
+    $ref: './paths/groups.yaml#/groups'
+
+  /locations/create:
+    $ref: './paths/location.yaml#/locations-create'
+
+  /products:
+    $ref: './paths/products.yaml#/products'
+  /products/create:
+    $ref: './paths/products.yaml#/products-create'
+  /products/{id}:
+    $ref: "./paths/products.yaml#/products-{id}"
+  /products/rate/{id}:
+    $ref: './paths/products.yaml#/products-rate-{id}'
+
+  /subcategories/create:
+    $ref: './paths/subcategories.yaml#/subcategories-create'
+  /{slug:category}/subcategories:
+    $ref: './paths/subcategories.yaml#/subcategories'
+  #  /{slug:category}/{slug:subcategory}:
+  #    $ref: './paths/subcategories.yaml#/subcategories'
+
+  /user:
+    $ref: './paths/user.yaml#/user'

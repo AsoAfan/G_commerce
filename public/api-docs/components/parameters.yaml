@@ -1,0 +1,21 @@
+id:
+  name: id
+  in: path
+  required: true
+  allowEmptyValue: false
+
+slug:
+  name: slug
+  in: path
+  required: true
+
+page:
+  name: page
+  in: query
+  default: 1
+
+limit:
+  name: limit
+  in: query
+  default: 20
+

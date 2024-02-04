@@ -1,0 +1,150 @@
+register:
+  post:
+    summary: Create new user
+
+    tags:
+      - "Auth"
+    description: Creates new user and email verification will be sent.
+      <a href = "http://127.0.0.1:8000/img/register.png" target="_blank">See Code Snippet</a>
+
+
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/userRequest/register'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/userResponse/emailSent/200'
+
+      400:
+        description: email is duplicated
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Email already assigned to another account
+                code:
+                  type: integer
+                  example: 400
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+verify-{slug}:
+  post:
+    tags:
+      - Auth
+    summary: verifies email
+    description: Verify user email with otp sent to his email.
+      <a href = "http://127.0.0.1:8000/img/EmailVerify.png" target="_blank">See Code Snippet</a>
+    parameters:
+      $ref: '../components/parameters.yaml#/slug'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/userRequest/verify-{slug}'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/userResponse/verify-{slug}/200'
+
+      202:
+        $ref: '../components/responses.yaml#/generalResponse/202'
+
+      400:
+        description: you are late this time
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Code has been expired
+                code:
+                  type: integer
+                  example: 400
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        description: wrong code
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Invalid verification code
+                code:
+                  type: integer
+                  example: 422
+verify-resend:
+  post:
+    summary: Verification again!
+    tags:
+      - Auth
+    description: sends new email verification request.
+      <a href = "http://127.0.0.1:8000/img/EmailVerify.png" target="_blank">See Code Snippet</a>
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/userRequest/verify-resend'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/userResponse/emailSent/200'
+
+      202:
+        $ref: '../components/responses.yaml#/generalResponse/202'
+      429:
+        $ref: '../components/responses.yaml#/generalResponse/429'
+login:
+  post:
+    summary: Logs user in
+    tags:
+      - Auth
+    description: Checks user credential and generates a token for him.
+      <a href = "http://127.0.0.1:8000/img/Login.png" target="_blank">See Code Snippet</a>
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/userRequest/login'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/userResponse/login/200'
+        # TODO: CHECK LATER
+
+      400:
+        $ref: '../components/responses.yaml#/userResponse/login/400'
+
+      403:
+        $ref: '../components/responses.yaml#/userResponse/login/403'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+        # TODO: Continue Refactoring...
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+logout:
+  post:
+    tags:
+      - Auth
+    summary: Logs user out
+    description: Removes all tokens for current user.
+      <a href = "http://127.0.0.1:8000/img/Logout.png" target="_blank">See Code Snippet</a>
+    security:
+      - ApiKey: [ ]
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/userResponse/logout/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+
+user:
+  get:
+    summary: Get current user
+    tags:
+      - User
+    description: Get authenticated user data.
+      <a href = "http://127.0.0.1:8000/img/CurrentUser.png" target="_blank">See Code Snippet</a>
+    security:
+      - ApiKey: [ ]
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/userResponse/user/200'

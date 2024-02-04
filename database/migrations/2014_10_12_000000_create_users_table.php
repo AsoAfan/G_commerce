@@ -16,10 +16,11 @@ return new class extends Migration {
                 $table->string('google_id')->nullable();
                 $table->string('facebook_id')->nullable();
             */
-            $table->string('username')->nullable();
+            $table->string('username');
             $table->string('email')->unique();
             $table->string('phone_number')->unique()->nullable();
             $table->string('image_path')->nullable();
+            $table->string('image_name')->nullable();
             $table->string('password')->nullable();
             $table->foreignId('cart_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();

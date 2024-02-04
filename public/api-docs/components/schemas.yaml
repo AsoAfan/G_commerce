@@ -1,0 +1,224 @@
+User:
+  description: <a href = "http://127.0.0.1:8000/img/UserMigration.png" target="_blank">User Migration Code</a>
+  type: object
+  properties:
+    id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+
+    username:
+      type: string
+      example: "Jon Doe?"
+    email:
+      type: string
+      example: "jonDoe@example.com"
+
+    phone_number:
+      type: string
+      pattern: "^0750-[0-9]{3}-[0-9]{4}$?"
+
+    image_path:
+      type: string
+      example: "path/to/image.png?"
+
+    cart_id:
+      type: object
+      example: Unknown -> database for this model does not completed yet
+
+    email_verified_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z?
+
+    phone_verified_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z?
+
+
+    created_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z | NULL
+
+    updated_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z | NULL
+
+    deleted_at:
+      type: string
+      format: timestamp
+      example: 2024-01-06T21:09:55.000000Z | NULL
+Product:
+  description: <a href="/img/ProductMigration.png" target="_blank">Product Migration Code</a>
+
+  type: object
+  properties:
+    id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+    name:
+      type: string
+      example: Galaxy tab s9 ultra
+    description:
+      type: string
+      example: a tablet made by samsung
+    price:
+      type: integer
+      example: 1199.99
+    currency:
+      type: string
+      example: $
+    image_path:
+      type: string
+      example: path/to/image/file.png
+    image_name:
+      type: string
+      example: file.png
+    count_rating:
+      description: Number of rating the product has
+      type: number
+      example: 175
+    avg_rating:
+      description: Average rating of the product
+      type: number
+      example: 3
+    brand:
+      $ref: '#/Brand'
+    discount:
+      $ref: '#/Discount'
+    attributes:
+      $ref: '#/Attribute'
+    rating:
+      $ref: '#/Rating'
+
+    created_at:
+      type: string
+      format: date
+      example: "2024-02-01T21:00:56.000000Z"
+
+    updated_at:
+      type: string
+      format: date
+      example: "2024-02-01T21:00:56.000000Z"
+
+Attribute:
+  description: <a href="/img/AttributeMigration.png" target="_blank">Attribute Migration Code</a>
+  type: array
+  items:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 11
+      name:
+        type: string
+        example: color
+      value:
+        type: string
+        example: gray
+      display_type:
+        type: string
+        example: RadioButton
+
+Discount:
+  description: <a href="/img/DiscountMigration.png" target="_blank">Discount Migration Code</a>
+  type: object
+  properties:
+    id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+    ratio:
+      type: number
+      example: 60
+    starts_at:
+      type: string
+      example: "2024-01-26 17:35:13"
+    expires_at:
+      type: string
+      example: "2024-02-3 00:00:00"
+Brand:
+  description: <a href="/img/BrandMigration.png" target="_blank">Brand Migration Code</a>
+
+  type: object
+  properties:
+    id:
+      type: integer
+      example: 27
+    name:
+      type: string
+      example: Samsung
+
+Group:
+  description: Group migration file
+  type: object
+  properties:
+    name:
+      type: string
+      example: half discount
+
+    discount_id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+
+    end_date:
+      type: string
+      example: "2024-01-024T21:09:55.000000Z"
+
+Rating:
+  type: object
+  properties:
+    id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+
+    username:
+      type: string
+      example: Jon Doe
+
+    image_path:
+      type: string
+      example: path/to/image.png
+
+    image_name:
+      type: string
+      example: image.png
+
+    rating:
+      type: number
+      example: 4.5
+
+    review:
+      type: string
+      example: Good Ipad
+
+Category:
+  type: object
+  properties:
+    name:
+      type: string
+      example: Technology
+    slug:
+      type: string
+      example: tech
+    image_path:
+      type: string
+      example: path/to/image.png
+    image_name:
+      type: string
+      example: image.png
+
+
+GenericPaginated:
+
+  type: object
+  properties:
+    NOTE:
+      type: string
+      example: This data can be vary depending on the model Refer to schema section
+
+
+
+
+

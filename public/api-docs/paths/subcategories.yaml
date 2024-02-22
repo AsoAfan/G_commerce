@@ -23,8 +23,8 @@ subcategories:
     parameters:
       - $ref: '../components/parameters.yaml#/page'
       - $ref: '../components/parameters.yaml#/limit'
-      - $ref: '../components/parameters.yaml#/slug'
-    
+      - $ref: '../components/parameters.yaml#/id'
+
     responses:
       200:
         $ref: '../components/responses.yaml#/paginatedResponse/200'

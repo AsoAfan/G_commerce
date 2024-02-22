@@ -1,3 +1,15 @@
+brands:
+  get:
+    summary: "Get Brands"
+    description: Get all brands with their discounts <a href="/img/GetBrands.png" target="_blank">Code Snippet</a>
+    tags:
+      - Brands
+    parameters:
+      - $ref: '../components/parameters.yaml#/page'
+      - $ref: '../components/parameters.yaml#/limit'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/200'
 brands-create:
   post:
     summary: Creates new brand
@@ -7,12 +19,56 @@ brands-create:
     tags:
       - Brands
     requestBody:
-      $ref: '../components/requestBodies.yaml#/generalRequest/nameOnly'
+      $ref: '../components/requestBodies.yaml#/brandRequest/create'
     responses:
       201:
         $ref: '../components/responses.yaml#/generalResponse/201'
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
+brands-{id}:
+  get:
+    summary: ""
+    description: "Get brand's products"
+    tags:
+      - Brands
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        description: OK
+
+  put:
+    summary: Update brand
+    description: update a brand. <a href="/img/updateBrand.png" target="_blank">Code snippet</a>
+    tags:
+      - Brands
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/brandRequest/update'
+
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/update/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+  delete:
+    summary: "Delete brand"
+    description: Delete specified brand. <a href="/img/deleteBrand.png" target="_blank">code snippet</a>
+    tags:
+      - Brands
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
 
 
 #      200:

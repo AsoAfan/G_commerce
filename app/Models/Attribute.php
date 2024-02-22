@@ -14,11 +14,18 @@ class Attribute extends Model
 //    protected $hidden = ["pivot"];
 
 
-
     public function products()
     {
         return $this->belongsToMany(Product::class, 'values')
-            ->withPivot('value', 'display_type');
+            ->withPivot([
+                'value',
+                'display_type',
+                'price',
+                'image_path',
+                'image_name',
+                'price',
+                'currency'
+            ]);
     }
 
 

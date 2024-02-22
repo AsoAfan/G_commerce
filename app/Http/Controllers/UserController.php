@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetAllUsersRequest;
 use App\Http\Requests\RegistrationRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\PaginationService;
 use App\Traits\EmailVerificationTrait;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Http\Request;
@@ -17,10 +20,15 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(PaginationService $paginator, GetAllUsersRequest $request)
     {
-        //
-        return User::all();
+        ['data' => $data, 'hasNextPage' => $hasNext] = $paginator->paginate(User::all());
+//        return UserRes
+        return [
+            'message' => "succeed",
+            'data' => [UserResource::collection($data)],
+            'hasNextPage' => $hasNext
+        ];
     }
 
     /**
@@ -31,11 +39,8 @@ class UserController extends Controller
 
 //        if ($validator->fails()) return response(['message' => $validator->messages()->all()], 400);
         try {
-            $newUser = User::create($request->only(['email', 'password']));
-            $verify_param = '';
-            if ($newUser) {
-                return $this->sendOtp($newUser->email);
-            }
+            $newUser = User::create($request->only(['username', 'email', 'password']));
+            return $this->sendOtp($newUser->email);
 
         } catch (UniqueConstraintViolationException $e) {
 
@@ -50,11 +55,11 @@ class UserController extends Controller
 
     /**
      * Display the specified resource.
+     * public function show(User $user)
+     * {
+     * return $user;
+     * }
      */
-    public function show(User $user)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

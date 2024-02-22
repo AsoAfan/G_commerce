@@ -17,6 +17,12 @@ class Discount extends Model
         return $this->hasMany(Category::class);
     }
 
+    public function subcategories()
+    {
+        return $this->hasMany(SubCategory::class);
+    }
+
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);

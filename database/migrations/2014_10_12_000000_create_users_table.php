@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('image_path')->nullable();
             $table->string('image_name')->nullable();
             $table->string('password')->nullable();
+            $table->enum('role', ['admin', 'user'])->default('user');
             $table->foreignId('cart_id')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamp('phone_verified_at')->nullable();

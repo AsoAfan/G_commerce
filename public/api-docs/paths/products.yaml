@@ -42,7 +42,55 @@ products-{id}:
       200:
         $ref: '../components/responses.yaml#/productResponse/200'
 
-products-rate-{id}:
+  put:
+    summary: ""
+    description: Update product
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/productRequest/update'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/update/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+  delete:
+    summary: "Move product to Trash NOT DONE"
+    description: Delete specified product. <a href="/img/deleteProduct.png" target="_blank">code snippet</a>
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
+delete-product-permanently:
+  delete:
+    summary: "Delete product permanently NOT DONE"
+    description: Delete specified product from Trash. <a href="/img/deleteProductPermanent.png" target="_blank">code snippet</a>
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
+
+products-{id}-rate:
   post:
     summery: ""
     description: Rate the product and leave your review
@@ -52,6 +100,33 @@ products-rate-{id}:
       - $ref: '../components/parameters.yaml#/id'
     requestBody:
       $ref: '../components/requestBodies.yaml#/productRequest/rate'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/200'
+products-{id}-favourite:
+  post:
+    summery: ""
+    description: Add a product to favourite list
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    security:
+      - ApiKey: [ ]
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/productResponse/favourite/200'
+products-search:
+  get:
+    description: Good
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/products/s'
+      - $ref: '../components/parameters.yaml#/products/attributes'
+      - $ref: '../components/parameters.yaml#/products/brand'
+      - $ref: '../components/parameters.yaml#/products/category'
+      - $ref: '../components/parameters.yaml#/products/groups'
     responses:
       200:
         $ref: '../components/responses.yaml#/generalResponse/200'

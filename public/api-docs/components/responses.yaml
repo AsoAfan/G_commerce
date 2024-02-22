@@ -1,11 +1,38 @@
 productResponse:
-
   200:
     description: OK
     content:
       application/json:
         schema:
           $ref: './schemas.yaml#/Product'
+  favourite:
+    200:
+      description: Operation succeed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: <product_name> added to/removed from favourite list
+              code:
+                type: number
+                example: 200
+  unfavoured:
+    200:
+      description: Operation succeed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: <product_name> removed from favourite list
+              code:
+                type: number
+                example: 200
 
 
 userResponse:
@@ -168,6 +195,49 @@ generalResponse:
             code:
               type: number
               example: 200
+  delete:
+    200:
+      description: Delete succeed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: <model_name> deleted successfully
+              data:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 27
+              code:
+                type: integer
+                example: 200
+  update:
+    200:
+      description: Operation succeed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: <Update succeed>
+              data:
+                type: object
+                properties:
+                  resource:
+                    type: object
+                    properties:
+                      NOTE:
+                        type: string
+                        example: This data can be vary depending on the model described in Schemas section below
+
+
+
 
 
   201:

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('docs');
 });
 
 Route::get('/sanctum/csrf-cookie', function () {
@@ -26,9 +26,6 @@ Route::get('/sanctum/csrf-cookie', function () {
     ];
 });
 
-Route::get('/docs', function (){
-    return view('docs');
-});
 
 require __DIR__ . '/web/guest.php';
 

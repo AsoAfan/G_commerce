@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\EmailVerificationTrait;
 use Illuminate\Support\Facades\Auth;
@@ -15,7 +16,7 @@ class AuthSessionController extends Controller
 
     public function show()
     {
-        return Auth::user();
+        return new UserResource(Auth::user());
 
     }
 

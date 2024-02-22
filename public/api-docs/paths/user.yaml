@@ -38,7 +38,7 @@ verify-{slug}:
     description: Verify user email with otp sent to his email.
       <a href = "http://127.0.0.1:8000/img/EmailVerify.png" target="_blank">See Code Snippet</a>
     parameters:
-      $ref: '../components/parameters.yaml#/slug'
+      - $ref: '../components/parameters.yaml#/slug'
     requestBody:
       $ref: '../components/requestBodies.yaml#/userRequest/verify-{slug}'
     responses:
@@ -138,13 +138,24 @@ logout:
 user:
   get:
     summary: Get current user
-    tags:
-      - User
     description: Get authenticated user data.
       <a href = "http://127.0.0.1:8000/img/CurrentUser.png" target="_blank">See Code Snippet</a>
     security:
       - ApiKey: [ ]
+    tags:
+      - User
 
     responses:
       200:
         $ref: '../components/responses.yaml#/userResponse/user/200'
+users:
+  get:
+    summary: ""
+    description: Get all users with paginated
+    security:
+      - ApiKey: [ ]
+    tags:
+      - User
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/paginatedResponse/200'

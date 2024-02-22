@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->string('name')->unique();
             $table->string('slug');
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->foreignUuid('discount_id')->nullable()->constrained('discounts')->nullOnDelete();
+
             $table->timestamps();
         });
     }

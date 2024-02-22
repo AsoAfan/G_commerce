@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'jsonify'], function () {
 
+    require_once __DIR__ . '/api/admin.php';
     require_once __DIR__ . '/api/auth.php';
     require_once __DIR__ . '/api/guest.php';
+    require_once __DIR__ . '/api/all_users.php';
 
 
 });

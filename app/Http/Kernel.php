@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\Jsonify;
+use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 
@@ -69,6 +70,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-        'jsonify' => Jsonify::class
+        'jsonify' => Jsonify::class,
+        'role' => RoleMiddleware::class
     ];
 }

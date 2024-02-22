@@ -139,7 +139,7 @@ Discount:
       type: string
       example: "2024-02-3 00:00:00"
 Brand:
-  description: <a href="/img/BrandMigration.png" target="_blank">Brand Migration Code</a>
+  description: ""
 
   type: object
   properties:
@@ -149,6 +149,12 @@ Brand:
     name:
       type: string
       example: Samsung
+    logo_path:
+      type: string
+      example: path/to/logo/nike.png
+    logo_name:
+      type: string
+      example: nike.png
 
 Group:
   description: Group migration file
@@ -208,6 +214,11 @@ Category:
     image_name:
       type: string
       example: image.png
+
+Subcategory:
+  type: object
+  properties:
+    
 
 
 GenericPaginated:

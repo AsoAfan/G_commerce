@@ -17,7 +17,9 @@ class BrandFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name
+            'name' => $this->faker->name,
+            'logo_path' => $this->faker->filePath(),
+            'logo_name' => $this->faker->domainName
         ];
     }
 }

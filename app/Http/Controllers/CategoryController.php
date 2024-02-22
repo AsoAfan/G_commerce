@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\PaginationService;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -29,7 +30,10 @@ class CategoryController extends Controller
 
         $newCategory = Category::create([
             'name' => $request->post('name'),
-            'slug' => $request->post('slug'),
+            'slug' => $request->post('slug') ?: Str::slug($request->post('name')),
+            'image_path' => $request->post('image_path'),
+            'image_name' => $request->post('image_name'),
+
             'discount_id' => $request->post('discount_id') ?: null
         ]);
 

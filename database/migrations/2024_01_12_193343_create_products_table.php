@@ -14,15 +14,19 @@ return new class extends Migration {
             $table->uuid("id")->index();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->integer('quantity')->default(0);
-            $table->double('price');
-            $table->char('currency', 3)->default('IQD');
-            $table->string('image_path');
-            $table->string('image_name');
+
+            # Moved to values table
+//            $table->integer('quantity')->default(0);
+//            $table->double('price');
+//            $table->char('currency', 3)->default('IQD');
+//            $table->string('image_path');
+//            $table->string('image_name');
+
             $table->foreignId('brand_id')->nullable()->constrained('brands')->nullOnDelete();
             $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
-//            $table->foreignId('group_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignUuid('discount_id')->nullable()->constrained()->nullOnDelete();
+//            $table->foreignId('group_id')->nullable()->constrained()->nullOnDelete();
+
             $table->timestamps();
             $table->softDeletes();
         });

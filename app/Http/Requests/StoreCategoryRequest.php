@@ -26,7 +26,8 @@ class StoreCategoryRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'slug' => ['required', 'unique:categories,slug'], // TODO: Using this (required) or its name => (not required)
+            'slug' => ['unique:categories,slug'],
+            'image_name' => ['required_with:image_path'],
             'discount_id' => ['exists:discounts,id']
         ];
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetResourcesRequest;
+use App\Http\Requests\SearchRequest;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\StoreRatingRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -11,6 +12,7 @@ use App\Models\Attribute;
 use App\Models\Product;
 use App\Models\Rating;
 use App\Services\PaginationService;
+use Illuminate\Database\QueryException;
 
 class ProductController extends Controller
 {
@@ -23,9 +25,31 @@ class ProductController extends Controller
 //        DB::enableQueryLog();
         ['data' => $data, 'hasNextPage' => $hasNext] = $paginationService->paginate(
 
-            Product::query()->filter(request(['s', 'attribute']))
+            Product::query()
+            , ['attributes', 'ratings', 'brand', 'discount']);
+
+//        return (DB::getQueryLog());
+
+
+        return [
+            'message' => 'succeed',
+            'data' => ProductResource::collection($data),
+            'meta' => ['hasNextPage' => $hasNext],
+            'code' => 200
+        ];
+    }
+
+    public function search(PaginationService $paginationService, SearchRequest $request)
+    {
+
+        if (empty($request->all())) return "Nothing";
+
+        ['data' => $data, 'hasNextPage' => $hasNext] = $paginationService->paginate(
+
+            Product::query()
+                ->filter($request->only(['s', 'attributes', 'brand', 'category', 'subcategory', 'groups']))
                 ->withCount('ratings')
-            , ['ratings', 'brand', 'discount']);
+            , ['ratings', 'brand', 'discount', 'subCategories']);
 
 //        return (DB::getQueryLog());
 
@@ -35,6 +59,7 @@ class ProductController extends Controller
             'meta' => ['hasNextPage' => $hasNext],
             'code' => 200
         ];
+
     }
 
 
@@ -45,17 +70,10 @@ class ProductController extends Controller
         $newProduct = Product::create([
             "name" => $request->post('name'),
             'description' => $request->post('description'),
-            "price" => $request->post('price'), // TODO: Refactor later
-            "currency" => $request->post('currency'),
-            "image_path" => $request->post('image_path'), // TODO: Refactor later
-            "image_name" => $request->post('image_name'), // TODO: Refactor later
 
             "brand_id" => $request->post('brand_id'),
             "category_id" => $request->post('category_id'),
             'discount_id' => $request->post('discount_id')
-            // TODO: Update api_docs and test this code
-//            "group_id" => $request->post('group_id')
-
         ]);
 
 
@@ -79,11 +97,16 @@ class ProductController extends Controller
 
             $newProduct->attributes()->attach($newAttribute, [
                 'value' => $attribute[key($attribute)],
-                'display_type' => $attribute['display_type']
+                'display_type' => $attribute['display_type'],
+                'image_path' => $attribute['image_path'],
+                'image_name' => $attribute['image_name'],
+                'price' => $attribute['price'],
+                'currency' => $attribute['currency'],
+                'quantity' => $attribute['quantity'],
             ]);
         }
         return response([
-            'message' => strtok($newProduct->name, ' ') . " Added successfully",
+            'message' => firstWord($newProduct->name) . " Added successfully",
             'code' => 201
         ], 201);
     }
@@ -105,6 +128,19 @@ class ProductController extends Controller
         ]);
     }
 
+    public function favourite(Product $product)
+    {
+//        return "HI";
+//        dd(auth()->user()->products);
+
+        $test = auth()->user()->products()->toggle($product);
+
+//        return $test;
+
+        return ['message' => firstWord($product->name) . ($test['attached'] ? " added to" : " removed from") . " favourite list", 'code' => 200];
+
+    }
+
     /**
      * Display the specified resource.
      */
@@ -115,10 +151,12 @@ class ProductController extends Controller
 
         $product = Product::where('id', $id)->first();
         if (!$product)
-            return response(['message' => "Not found", 'code' => 404], 404);
+            return missingRoute();
 
-        $product->with(['brand', 'discount']);
-        return new ProductResource($product);
+        $product->load(['discount', 'attributes', 'subCategories']);
+
+
+        return [new ProductResource($product)];
     }
 
 
@@ -127,7 +165,45 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $product->update($request->except(['attributes', 'group_ids', 'sub_category_ids']));
+
+        $product->groups()->sync($request->post('group_ids'));
+        $product->subCategories()->sync($request->post('sub_category_ids'));
+
+        $attributes = $request->post('attributes');
+        $values = [];
+
+        foreach ($attributes as $attribute) {
+            $key = key($attribute);
+            $values[$key] = [
+                'value' => $attribute[$key],
+                "display_type" => $attribute['display_type'],
+                'price' => $attribute['price'],
+                'currency' => $attribute['currency'],
+                'image_path' => $attribute['image_path'],
+                'image_name' => $attribute['image_name'],
+                'quantity' => $attribute['quantity'],
+            ];
+        }
+
+        try {
+            $product->attributes()->syncWithoutDetaching($values);
+        } catch (QueryException) {
+            return response([
+                'message' => "Validation failed",
+                'errors' => ['The selected attribute ids is invalid.'],
+                'code' => 422
+            ], 422);
+        }
+
+        $product->load('attributes');
+
+        return [
+            'message' => "Product updated successfully",
+            'data' => ['resource' => new ProductResource($product)],
+            'code' => 200
+        ];
+
     }
 
     /**
@@ -135,6 +211,26 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        if ($product->delete()) {
+            return [
+                'message' => "Product deleted successfully",
+                'data' => ['id' => $product->id],
+                'code' => 200
+            ];
+        } else {
+            $code = response()->getStatusCode();
+            return response(['message' => "An error occurred", 'code' => $code], $code);
+        }
+
+    }
+
+    public function destroyPermanently(Product $product)
+    {
+        if ($product->forceDelete()) {
+            return ['message' => "Product deleted successfully", 'code' => 200];
+        } else {
+            $code = response()->getStatusCode();
+            return response(['message' => "An error occurred", 'code' => $code], $code);
+        }
     }
 }

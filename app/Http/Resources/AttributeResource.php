@@ -14,12 +14,17 @@ class AttributeResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+//        dd($this->pivot->price);
 //        return [];
         return [
             "id" => $this->id,
             "name" => $this->name,
             "value" => $this->whenPivotLoaded('values', fn() => $this->pivot->value),
             "display_type" => $this->whenPivotLoaded('values', fn() => $this->pivot->display_type),
+            'price' => $this->whenPivotLoaded('values', fn() => $this->pivot->price),
+            'currency' => $this->whenPivotLoaded('values', fn() => $this->pivot->currency),
+            'image_path' => $this->whenPivotLoaded('values', fn() => $this->pivot->image_path),
+            'image_name' => $this->whenPivotLoaded('values', fn() => $this->pivot->image_name),
 
         ];
     }

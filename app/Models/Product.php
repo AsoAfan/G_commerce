@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Facades\Log;
 
 class Product extends Model
 {
@@ -16,33 +15,27 @@ class Product extends Model
 
     protected $fillable = ['name'];
 
-    protected $with = ['attributes'];
+//    protected $with = ['attributes'];
 
     protected $hidden = ['discount_id', 'category_id', 'brand_id'];
 
 
     public function scopeFilter(Builder $query, array $filters)
     {
-
-        $start = microtime(true);
-
         /**
          * Filters:
          * ==========
          * 1. Search
          * 2. attribute values
+         * 3. brand
+         * 4. category
+         * 5. group
          *
          *
          *
-
-
          */
 
-// Your code here
-
-// Loop on request query instead of all available attributes
-//        $at = Attribute::all();
-
+        // 1. search by name and description
         $query->when($filters['s'] ?? false, function ($query, $searchTerm) {
             $query
                 ->where('name', "LIKE", "%$searchTerm%")
@@ -50,29 +43,78 @@ class Product extends Model
         }
         );
 
-        $query->when($filters['attribute'] ?? false, function ($query) use ($filters) {
+        // 2. filter by attributes => attributes:attr_name:attr_value,attr_name2:attr_value2
+        $query->when($filters['attributes'] ?? false, function ($query) use ($filters) {
+
 
             // Split the attributes and values
-            $attributes = explode(',', $filters['attribute']);
+//            $attributes = explode(',', $filters['attributes']);
+            $attributes = collect(explode(",", $filters['attributes']))->map(
+                function ($attribute) {
+                    [$name, $value] = explode(":", $attribute);
+                    return compact('name', 'value');
+                }
+            );
 
-            // Nested whereHas for each attribute
-//            $query->where(function ($query) use ($attributes) {
+
+            // TODO: Better way (without loop)
             foreach ($attributes as $attribute) {
-//                    dd($attribute);
-//                    if ($attribute != 'test:B')
-//                        dd(explode(':', $attribute));
-                [$attributeName, $attributeValue] = explode(':', $attribute);
 
-                $query->WhereHas('attributes', function (Builder $q) use ($attributeName, $attributeValue) {
-                    $q->where('name', $attributeName)->where('value', $attributeValue);
-                    Log::info($q->toRawSql() . PHP_EOL);
+                $query->WhereHas('attributes', function (Builder $query) use ($attribute) {
+                    $query->where('name', $attribute['name'])->where('value', $attribute['value']);
                 });
             }
-//            });
+        });
+
+        // 3. filter by brand
+        $query->when($filters['brand'] ?? false, function (Builder $query, $brand) {
+            $query->whereHas('brand', fn(Builder $query) => $query
+                ->where("id", $brand)
+            );
+        });
+
+        // 4. category
+        $query->when($filters['category'] ?? false, function ($query) {
+            $query->whereHas('category', function ($query, $category) {
+                $query->where('id', $category);
+            });
 
         });
+
+        $query->when($filters['subcategory'] ?? false, function (Builder $query, $subcategory) {
+            $subcategories = explode(',', $subcategory);
+
+            $query->withCount('subcategories')->
+            whereHas('subCategories', function (Builder $query) use ($subcategories) {
+                $query->distinct()->whereIn('sub_categories.id', $subcategories);
+            }, count($subcategories));
+
+        });
+
+        // 5. subcategory
+        /* $query->when($filters['subcategory'] ?? false, fn(Builder $query) => $query
+             ->whereHas('subCategories', fn(Builder $query, $id) => $query
+                 ->where('id', $id)
+             )
+         );*/
+
+
+        // group
+        $query->when($filters['groups'] ?? false, function (Builder $query, $group) use ($filters) {
+            $groups = explode(',', $group);
+            $query
+                ->withCount('groups')
+                ->whereHas('groups', function (Builder $query) use ($groups, $group) {
+                    $query->distinct()->whereIn('groups.id', $groups);
+                }, '=', count($groups));
+        });
+
     }
 
+    public function users()
+    {
+        return $this->belongsToMany(Product::class, 'favourites');
+    }
 
     public function ratings(): BelongsToMany
     {
@@ -115,7 +157,15 @@ class Product extends Model
     {
 
         return $this->belongsToMany(Attribute::class, 'values')
-            ->withPivot('value', 'display_type');
+            ->withPivot([
+                'value',
+                'display_type',
+                'price',
+                'image_path',
+                'image_name',
+                'price',
+                'currency'
+            ]);
 
     }
 }

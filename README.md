@@ -36,7 +36,7 @@ fill up database credentials in `.env` and then migrate the database
 php artisan migrate
 ```
 
-### Run backend server
+### Start Laravel server
 
 ---
 
@@ -47,7 +47,7 @@ php artisan serve
 #### REST API:
 
 - base url: [http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)
-- docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- docs: [http://127.0.0.1:8000](http://127.0.0.1:8000/docs)
 
 #### GraphQL API <sub>(not available yet)</sub>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
@@ -57,7 +58,7 @@ class LoginRequest extends FormRequest
 
             'data' => [
                 "token" => Auth::user()->createToken('API Token')->plainTextToken,
-                'user' => Auth::user(),
+                'user' => new UserResource(Auth::user()),
             ],
 
         ];

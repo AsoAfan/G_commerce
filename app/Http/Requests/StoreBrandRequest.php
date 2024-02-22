@@ -25,7 +25,9 @@ class StoreBrandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:brands,name']
+            'name' => ['required', 'unique:brands,name'],
+//            'logo_path' => ['required'],
+            'logo_name' => ['required_with:logo_path']
         ];
     }
 

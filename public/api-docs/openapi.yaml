@@ -1,4 +1,4 @@
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   title: G_Commerce
   description: Api docs for G_Commerce intern project
@@ -23,6 +23,9 @@ components:
       $ref: './components/schemas.yaml#/Product'
     Rating:
       $ref: './components/schemas.yaml#/Rating'
+
+    Subcategory:
+      $ref: '/components/schemas.yaml#/Subcategory'
     User:
       $ref: './components/schemas.yaml#/User'
   securitySchemes:
@@ -47,6 +50,10 @@ paths:
 
   /brands/create:
     $ref: './paths/brands.yaml#/brands-create'
+  /brands/{id}:
+    $ref: './paths/brands.yaml#/brands-{id}'
+  /brands:
+    $ref: './paths/brands.yaml#/brands'
 
   /categories/create:
     $ref: './paths/categories.yaml#/categories-create'
@@ -78,15 +85,25 @@ paths:
     $ref: './paths/products.yaml#/products-create'
   /products/{id}:
     $ref: "./paths/products.yaml#/products-{id}"
-  /products/rate/{id}:
-    $ref: './paths/products.yaml#/products-rate-{id}'
+  /products/delete/{product}:
+    $ref: './paths/products.yaml#/delete-product-permanently'
+  /products/{id}/rate:
+    $ref: './paths/products.yaml#/products-{id}-rate'
+  /products/{id}/favourite:
+    $ref: './paths/products.yaml#/products-{id}-favourite'
+  /products/{id}/unfavoured:
+    $ref: './paths/products.yaml#/products-{id}-favourite'
+  /products/search:
+    $ref: './paths/products.yaml#/products-search'
 
   /subcategories/create:
     $ref: './paths/subcategories.yaml#/subcategories-create'
-  /{slug:category}/subcategories:
+  /{categoryId}/subcategories:
     $ref: './paths/subcategories.yaml#/subcategories'
   #  /{slug:category}/{slug:subcategory}:
   #    $ref: './paths/subcategories.yaml#/subcategories'
 
   /user:
     $ref: './paths/user.yaml#/user'
+  /users:
+    $ref: './paths/user.yaml#/users'

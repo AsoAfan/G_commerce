@@ -1,3 +1,30 @@
+products:
+  s:
+    name: s
+    in: query
+    description: Search term
+  attributes:
+    name: attributes
+    in: query
+    description: Exact match
+
+    example: "color:red,size:lg"
+  brand:
+    in: query
+    name: brand
+    description: Brand id
+  category:
+    in: query
+    name: category
+    description: Category id
+  groups:
+    in: query
+    name: groups
+    schema:
+      type: string
+    description: Group ids separated by comma
+
+
 id:
   name: id
   in: path

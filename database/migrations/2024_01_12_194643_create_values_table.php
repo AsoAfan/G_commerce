@@ -12,8 +12,13 @@ return new class extends Migration {
     {
         Schema::create('values', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('product_id')->constrained('products')->cascadeOnDelete();
-            $table->foreignId('attribute_id')->constrained('attributes')->cascadeOnDelete();
+            $table->foreignUuid('product_id')->constrained('products')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('attribute_id')->constrained('attributes')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->string('image_path');
+            $table->string('image_name');
+            $table->double('price');
+            $table->char('currency', 3)->default('IQD');
+            $table->integer('quantity')->default(0);
             $table->string("display_type");
             $table->string('value');
 

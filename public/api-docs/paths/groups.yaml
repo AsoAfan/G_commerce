@@ -1,10 +1,9 @@
 groups-create:
   post:
-    summery: Creates new group
-    description: Create a group of products and apply discount for them
+    summary: Creates new group ✅
+    description: Create a group of products and apply discount for them. <a href="img/Create-new-group.png" target="_blank">Code snippet</a>
     tags:
       - Groups
-
     requestBody:
       $ref: '../components/requestBodies.yaml#/groupRequest/create'
 
@@ -12,12 +11,74 @@ groups-create:
       201:
         $ref: '../components/responses.yaml#/generalResponse/201'
 
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
+
+groups-{id}:
+
+  get:
+    summary: Get single group
+    description: Get products of a group with their discount.
+    tags:
+      - Groups
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/groupResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+  put:
+    summary: Update group ✅
+    description: Update specified group. <a href="img/Update-a-group.png" target="_blank">Code snippet</a>
+    tags:
+      - Groups
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/groupRequest/update'
+    security:
+      - ApiKey: [ ]
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/update/200'
+
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+  delete:
+    summary: Delete group ✅
+    description: Delete specified group. <a href="img/Delete-a-group.png" target="_blank">Code snippet</a>
+    tags:
+      - Groups
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    security:
+      - ApiKey: [ ]
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
+
+
 groups:
   get:
-    summery: ""
-    description: Get all groups with pagination
+    summary: Get all groups ✅
+    description: Get all groups with pagination. <a href="img/Get-all-groups.png" target="_blank">Code snippet</a>
     tags:
       - Groups
     parameters:

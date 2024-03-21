@@ -13,8 +13,7 @@ class StoreDiscountRequest extends FormRequest
      */
     public function authorize(): bool
     {
-//        return auth()->user()->role == 'admin';
-        return true;
+        return auth()->user()->role == 'admin';
     }
 
     /**
@@ -27,7 +26,7 @@ class StoreDiscountRequest extends FormRequest
         return [
             'ratio' => ['required', 'numeric'],
             'starts_at' => ['date'],
-            'expires_at' => ['required', 'date']
+            'expires_at' => ['date', 'after:starts_at']
         ];
     }
 

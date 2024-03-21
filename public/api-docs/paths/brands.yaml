@@ -1,7 +1,7 @@
 brands:
   get:
-    summary: "Get Brands"
-    description: Get all brands with their discounts <a href="/img/GetBrands.png" target="_blank">Code Snippet</a>
+    summary: Get All Brands ✅
+    description: Get all brands with their discounts <a href="/img/Get-All-Brands.png" target="_blank">Code Snippet</a>
     tags:
       - Brands
     parameters:
@@ -9,39 +9,48 @@ brands:
       - $ref: '../components/parameters.yaml#/limit'
     responses:
       200:
-        $ref: '../components/responses.yaml#/generalResponse/200'
+        $ref: '../components/responses.yaml#/paginatedResponse/200'
 brands-create:
   post:
-    summary: Creates new brand
+    summary: Creates new brand ✅
     description: creates new brand with its name.
-      <a href = "http://127.0.0.1:8000/img/NewBrand.png" target="_blank">See Code Snippet</a>
+      <a href = "img/Create-new-brand.png" target="_blank">See Code Snippet</a>
 
     tags:
       - Brands
+
+    security:
+      - ApiKey: [ ]
     requestBody:
       $ref: '../components/requestBodies.yaml#/brandRequest/create'
     responses:
       201:
         $ref: '../components/responses.yaml#/generalResponse/201'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
 brands-{id}:
   get:
-    summary: ""
-    description: "Get brand's products"
+    summary: Get Single Brand ✅
+    description: Get information of specified brand. <a href="/img/singleBrand.png" target="_blank">Code snippet</a>
     tags:
       - Brands
     parameters:
       - $ref: '../components/parameters.yaml#/id'
     responses:
       200:
-        description: OK
+        $ref: '../components/responses.yaml#/brandResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
 
   put:
-    summary: Update brand
+    summary: Update brand ✅
     description: update a brand. <a href="/img/updateBrand.png" target="_blank">Code snippet</a>
     tags:
       - Brands
+    security:
+      - ApiKey: [ ]
     requestBody:
       $ref: '../components/requestBodies.yaml#/brandRequest/update'
 
@@ -57,27 +66,21 @@ brands-{id}:
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
   delete:
-    summary: "Delete brand"
+    summary: Delete brand ✅
     description: Delete specified brand. <a href="/img/deleteBrand.png" target="_blank">code snippet</a>
     tags:
       - Brands
+
+    security:
+      - ApiKey: [ ]
     parameters:
       - $ref: '../components/parameters.yaml#/id'
     responses:
       200:
         $ref: '../components/responses.yaml#/generalResponse/delete/200'
 
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+
       404:
         $ref: '../components/responses.yaml#/generalResponse/404'
-
-
-#      200:
-#        description: Brand created successfully
-#        content:
-#          application/json:
-#            schema:
-#              type: object
-#              properties:
-#                message:
-#                  type: string
-#                  example:

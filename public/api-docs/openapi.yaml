@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.0.3
 info:
   title: G_Commerce
-  description: Api docs for G_Commerce intern project
+  description: Api details for G_Commerce intern project
   version: 1.3.0
 servers:
   - url: 'http://127.0.0.1:8000/api'
@@ -57,44 +57,56 @@ paths:
 
   /categories/create:
     $ref: './paths/categories.yaml#/categories-create'
+  /categories/{id}:
+    $ref: './paths/categories.yaml#/categories-{id}'
 
   /categories:
     $ref: './paths/categories.yaml#/categories'
 
   /coupons/create:
     $ref: './paths/coupon.yaml#/coupon-create'
+  /coupons/{code}:
+    $ref: './paths/coupon.yaml#/coupons-{code}'
   /coupons:
     $ref: './paths/coupon.yaml#/coupons'
 
   /discounts/create:
     $ref: './paths/discounts.yaml#/discounts-create'
+  /discounts/{id}:
+    $ref: './paths/discounts.yaml#/discounts-{id}'
   /discounts:
     $ref: './paths/discounts.yaml#/discounts'
 
   /groups/create:
     $ref: './paths/groups.yaml#/groups-create'
+  /groups/{id}:
+    $ref: './paths/groups.yaml#/groups-{id}'
   /groups:
     $ref: './paths/groups.yaml#/groups'
 
   /locations/create:
     $ref: './paths/location.yaml#/locations-create'
+  /locations/{id}:
+    $ref: './paths/location.yaml#/locations-{id}'
+  /locations:
+    $ref: './paths/location.yaml#/locations'
 
-  /products:
-    $ref: './paths/products.yaml#/products'
+
   /products/create:
     $ref: './paths/products.yaml#/products-create'
   /products/{id}:
     $ref: "./paths/products.yaml#/products-{id}"
-  /products/delete/{product}:
+  /products/delete/{id}:
     $ref: './paths/products.yaml#/delete-product-permanently'
   /products/{id}/rate:
     $ref: './paths/products.yaml#/products-{id}-rate'
   /products/{id}/favourite:
     $ref: './paths/products.yaml#/products-{id}-favourite'
-  /products/{id}/unfavoured:
-    $ref: './paths/products.yaml#/products-{id}-favourite'
+
   /products/search:
     $ref: './paths/products.yaml#/products-search'
+  /products:
+    $ref: './paths/products.yaml#/products'
 
   /subcategories/create:
     $ref: './paths/subcategories.yaml#/subcategories-create'
@@ -105,5 +117,14 @@ paths:
 
   /user:
     $ref: './paths/user.yaml#/user'
+  /forget-password:
+    $ref: './paths/user.yaml#/forget-password'
+  /forget-password/verify/{slug}:
+    $ref: './paths/user.yaml#/forget-password-verify'
+  /reset-password/{slug}:
+    $ref: './paths/user.yaml#/reset-password'
+  /forget-password/resend:
+    $ref: './paths/user.yaml#/forget-password'
+
   /users:
     $ref: './paths/user.yaml#/users'

@@ -2,21 +2,35 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\TooManyRequestsException;
 use App\Http\Resources\UserResource;
-use Illuminate\Contracts\Routing\ResponseFactory;
+use App\Mail\LoginAttemptMail;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class LoginRequest extends FormRequest
 {
+    private $maxAttempts = 5;
+
+
+    protected function prepareForValidation()
+    {
+
+        $this->makeSureNotRateLimited();
+    }
+
+
     /**
      * Determine if the user is authorized to make this request.
      */
+
+
     public function authorize(): bool
     {
         return !auth()->check();
@@ -44,9 +58,8 @@ class LoginRequest extends FormRequest
         ], 422));
     }
 
-    function authenticate(): Application|Response|array|\Illuminate\Contracts\Foundation\Application|ResponseFactory
+    function authenticate()
     {
-
 
         if (!Auth::attempt($this->only(['email', 'password']))) {
             return response(['message' => "Invalid credentials", 'code' => 400], 400);
@@ -62,6 +75,28 @@ class LoginRequest extends FormRequest
             ],
 
         ];
+    }
+
+    /**
+     * @throws TooManyRequestsException
+     */
+    public function makeSureNotRateLimited()
+    {
+
+        RateLimiter::hit($this->throttleKey(), 600);
+
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), $this->maxAttempts))
+            return;
+
+        if (RateLimiter::attempts($this->throttleKey()) == $this->maxAttempts)
+            Mail::to($this->email)->send(new LoginAttemptMail($this->email));
+
+        throw new TooManyRequestsException();
+    }
+
+    private function throttleKey()
+    {
+        return Str::lower("log|" . $this->email . "|" . $this->ip());
     }
 
 }

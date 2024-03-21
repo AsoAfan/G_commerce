@@ -13,8 +13,7 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-//        return auth()->role == 'admin'; // TODO: Only Admins
-        return true;
+        return auth()->user()->role == 'admin';
     }
 
     /**

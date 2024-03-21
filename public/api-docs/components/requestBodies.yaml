@@ -1,6 +1,5 @@
 productRequest:
   create:
-    description: Note that each attribute is an object of attribute_name and its display_type as keys with their values
     content:
       application/json:
         schema:
@@ -38,8 +37,6 @@ productRequest:
                   image_name:
                     type: string
                     example: "file.png"
-
-
             brand_id:
               type: integer
               example: 3
@@ -69,7 +66,6 @@ productRequest:
             - image_name
             - attributes
   update:
-    description: Note that each attribute is an object of attribute_name and its display_type as keys with their values
     content:
       application/json:
         schema:
@@ -86,12 +82,15 @@ productRequest:
               items:
                 type: object
                 properties:
-                  attribute_name:
+                  attribute_id:
                     type: string
                     example: attribute_value
                   display_type:
                     type: string
-                    example: radioButton
+                    example: radioButton,
+                  quantity:
+                    type: number
+                    example: 13
                   price:
                     type: number
                     example: 1199.99
@@ -105,8 +104,6 @@ productRequest:
                   image_name:
                     type: string
                     example: "file.png"
-
-
             brand_id:
               type: integer
               example: 3
@@ -126,15 +123,6 @@ productRequest:
               example:
                 - 33
                 - 79
-
-          required:
-            - name
-            - description
-            - price
-            - currency
-            - image_path
-            - image_name
-            - attributes
   rate:
     content:
       application/json:
@@ -174,6 +162,16 @@ userRequest:
               type: string
               description: Same as password
               example: "password"
+  forget-password:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+              format: email
+              example: "JoeDoe@example.com"
 
   login:
     content:
@@ -188,7 +186,7 @@ userRequest:
             password:
               type: string
               example: "password"
-  verify-{slug}:
+  verify-slug:
     required: true
     content:
       application/json:
@@ -209,9 +207,24 @@ userRequest:
               type: string
               format: email
               example: "JonDoe@example.com"
+  reset-password:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            password:
+              type: string
+              minimum: 8
+              example: "password"
+            password_confirmation:
+              type: string
+              description: Same as password
+              example: "password"
 
 discountRequest:
   create:
+    required: true
     content:
       application/json:
         schema:
@@ -229,6 +242,25 @@ discountRequest:
               type: string
               format: date
               example: 2024-01-09T17:24
+  update:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            ratio:
+              type: number
+              example: 25
+            starts_at:
+              type: string
+              default: now()
+              format: date
+              example: 2024-02-09T17:24
+            expires_at:
+              type: string
+              format: date
+              example: 2024-02-09T17:24
+
 
 categoryRequest:
   create:
@@ -276,6 +308,28 @@ groupRequest:
               items:
                 type: string
                 pattern: '^[0-9a-fA-F\-]{36}$'
+  update:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Friday discount
+            discount_id:
+              type: string
+              pattern: '^[0-9a-fA-F\-]{36}$'
+            end_date:
+              type: string
+              format: date
+              example: "2024-01-09T17:24"
+            products:
+              type: array
+              items:
+                type: string
+                pattern: '^[0-9a-fA-F\-]{36}$'
+
 
 brandRequest:
   create:
@@ -316,6 +370,34 @@ brandRequest:
 
 couponRequest:
   create:
+    required:
+      - code
+      - ratio
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            code:
+              type: string
+              example: FRIDAYOFF
+
+            ratio:
+              type: number
+              example: 15
+
+            starts_at:
+              type: string
+              format: date
+              example: 2024-01-09T17:24
+
+
+            expires_at:
+              type: string
+              format: date
+              example: 2024-01-11T17:24
+
+  update:
     content:
       application/json:
         schema:
@@ -376,11 +458,10 @@ locationRequest:
             type:
               type: string
               example: house
-
-
-
-
-
+            note:
+              type: string
+              max: 500
+              example: "Any additional note from user"
 
 generalRequest:
   nameOnly:

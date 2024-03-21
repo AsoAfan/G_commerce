@@ -28,15 +28,37 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
 
-        RateLimiter::for('otpRequest',
-            fn(Request $request) => Limit::perMinutes(5,3)
+        RateLimiter::for('otpRequest', function () {
+            return Limit::perMinutes(5, 3)
                 ->response(
-                    fn(Request $request) => response(
-                        ['message' => "To many requests try again later", ],
-                        429
+                    fn() => response(
+                        ['message' => "To many requests try again later", 'code' => 429],
+                        status: 429
                     )
-                )
-        );
+                );
+        });
+//        RateLimiter::for('loginRequest', fn($request) => Limit::perMinutes(10, 5)
+//            ->by($request->input('email'))
+//            ->response(function (Request $request) {
+//
+//
+//                /**
+//                 * @var User $user
+//                 */
+//                $user = User::find($request->post('email'));
+//                try {
+//                    $user->notify(new LoginAttemptNotification());
+//
+//                } catch (Error) {
+//                }
+////                Notification::route('mail', $request->post('email'))->notify(new LoginAttemptNotification());
+//                return response([
+//                    'message' => "Too many login attempts. Your account has been temporarily blocked for security reasons",
+//                    'code' => 429
+//                ], 429);
+//            })
+//        );
+
 
         $this->routes(function () {
             Route::middleware('api')

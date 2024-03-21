@@ -1,11 +1,11 @@
 register:
   post:
-    summary: Create new user
+    summary: Create new user ✅
 
     tags:
       - "Auth"
     description: Creates new user and email verification will be sent.
-      <a href = "http://127.0.0.1:8000/img/register.png" target="_blank">See Code Snippet</a>
+      <a href = "img/register.png" target="_blank">Code Snippet</a>
 
 
     requestBody:
@@ -32,57 +32,36 @@ register:
 
 verify-{slug}:
   post:
+    summary: verifies email ✅
+    description: Verify user email with otp sent to his email.
+      <a href = "img/Verify-user.png" target="_blank">Code Snippet</a>
     tags:
       - Auth
-    summary: verifies email
-    description: Verify user email with otp sent to his email.
-      <a href = "http://127.0.0.1:8000/img/EmailVerify.png" target="_blank">See Code Snippet</a>
     parameters:
       - $ref: '../components/parameters.yaml#/slug'
     requestBody:
-      $ref: '../components/requestBodies.yaml#/userRequest/verify-{slug}'
+      $ref: '../components/requestBodies.yaml#/userRequest/verify-slug'
     responses:
       200:
-        $ref: '../components/responses.yaml#/userResponse/verify-{slug}/200'
+        $ref: '../components/responses.yaml#/userResponse/verify-slug/200'
 
       202:
         $ref: '../components/responses.yaml#/generalResponse/202'
 
       400:
-        description: you are late this time
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Code has been expired
-                code:
-                  type: integer
-                  example: 400
+        $ref: '../components/responses.yaml#/userResponse/verify-slug/400'
+
+      403:
+        $ref: '../components/responses.yaml#/userResponse/verify-slug/403'
       404:
         $ref: '../components/responses.yaml#/generalResponse/404'
-      422:
-        description: wrong code
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  example: Invalid verification code
-                code:
-                  type: integer
-                  example: 422
+
 verify-resend:
   post:
-    summary: Verification again!
+    summary: Verification again! ✅
     tags:
       - Auth
-    description: sends new email verification request.
-      <a href = "http://127.0.0.1:8000/img/EmailVerify.png" target="_blank">See Code Snippet</a>
+    description: sends new email verification request
     requestBody:
       $ref: '../components/requestBodies.yaml#/userRequest/verify-resend'
     responses:
@@ -95,14 +74,12 @@ verify-resend:
         $ref: '../components/responses.yaml#/generalResponse/429'
 login:
   post:
-    summary: Logs user in
+    summary: Logs user in ℹ️
     tags:
       - Auth
     description: Checks user credential and generates a token for him.
-      <a href = "http://127.0.0.1:8000/img/Login.png" target="_blank">See Code Snippet</a>
     requestBody:
       $ref: '../components/requestBodies.yaml#/userRequest/login'
-
     responses:
       200:
         $ref: '../components/responses.yaml#/userResponse/login/200'
@@ -124,9 +101,9 @@ logout:
   post:
     tags:
       - Auth
-    summary: Logs user out
+    summary: Logs user out ✅
     description: Removes all tokens for current user.
-      <a href = "http://127.0.0.1:8000/img/Logout.png" target="_blank">See Code Snippet</a>
+      <a href = "img/Logout.png" target="_blank">Code Snippet</a>
     security:
       - ApiKey: [ ]
     responses:
@@ -139,7 +116,7 @@ user:
   get:
     summary: Get current user
     description: Get authenticated user data.
-      <a href = "http://127.0.0.1:8000/img/CurrentUser.png" target="_blank">See Code Snippet</a>
+      <a href = "img/Current-user.png" target="_blank">Code Snippet</a>
     security:
       - ApiKey: [ ]
     tags:
@@ -159,3 +136,62 @@ users:
     responses:
       200:
         $ref: '../components/responses.yaml#/paginatedResponse/200'
+
+forget-password:
+  post:
+    summery: ""
+    description: ""
+    tags:
+      - User
+
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/userRequest/forget-password'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/userResponse/emailSent/200'
+
+
+forget-password-verify:
+  post:
+    summery: ""
+    description: ""
+    tags:
+      - User
+
+    parameters:
+      - $ref: '../components/parameters.yaml#/slug'
+
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/userRequest/verify-slug'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/userResponse/emailSent/200'
+      400:
+        $ref: '../components/responses.yaml#/userResponse/verify-slug/400'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+
+
+reset-password:
+  post:
+    summary: ""
+    description: ""
+    tags:
+      - User
+    parameters:
+      - $ref: '../components/parameters.yaml#/slug'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/userRequest/reset-password'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/userResponse/password-reset/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+
+

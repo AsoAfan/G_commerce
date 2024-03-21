@@ -13,8 +13,7 @@ class StoreGroupRequest extends FormRequest
      */
     public function authorize(): bool
     {
-//        return auth()->user()->role == 'admin';
-        return true;
+        return auth()->user()->role == 'admin';
     }
 
 

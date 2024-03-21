@@ -8,14 +8,15 @@ use App\Http\Requests\UpdateBrandRequest;
 use App\Http\Resources\BrandResource;
 use App\Models\Brand;
 use App\Services\PaginationService;
-use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
 {
 
     public function index(PaginationService $paginator, GetResourcesRequest $request)
     {
-        ['data' => $data, 'hasNextPage' => $hasNext] = $paginator->paginate(Brand::query()->withCount('products'));
+        ['data' => $data, 'hasNextPage' => $hasNext] = $paginator->paginate(
+            Brand::query()->withCount('products')
+        );
 
         return [
             'message' => "succeed",
@@ -25,14 +26,10 @@ class BrandController extends Controller
         ];
     }
 
-    public function show($id)
+    public function show(Brand $brand)
     {
-        DB::enableQueryLog();
-        $brand = Brand::where('id', $id)->first();
-
-        if (!$brand) return missingRoute();
-
-        return new BrandResource($brand);
+        $brand->loadCount('products');
+        return [new BrandResource($brand)];
     }
 
     public function store(StoreBrandRequest $request)
@@ -46,7 +43,7 @@ class BrandController extends Controller
 
         return response([
             'message' => ucfirst($newBrand->name) . " brand created successfully",
-            'data' => ['id' => $newBrand->id],
+            'data' => ['resource' => $newBrand],
             'code' => 201
         ], 201);
 
@@ -54,9 +51,8 @@ class BrandController extends Controller
 
     public function update(Brand $brand, UpdateBrandRequest $request)
     {
-//        dd($request->all());
 
-        $brand->update($request->all());
+        $brand->update($request->only(['name', 'logo_path', 'logo_name']));
         return [
             'message' => "Brand updated successfully",
             'data' => ['resource' => new BrandResource($brand)],

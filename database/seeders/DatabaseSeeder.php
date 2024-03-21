@@ -18,6 +18,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::factory()->create([
+            'username' => "Aso A.Sdiq",
+            'email' => "aso.sargaty@yahoo.com",
+            'phone_number' => "07721234567",
+            'email_verified_at' => now(),
+            'phone_verified_at' => now(),
+            'password' => '$2y$10$i01ZCM8KnkyVRFZ46ey6f.kl5MWVJZFosBSLHnHRtl2PS0.0Ypq46', // 12345678
+            'role' => 'admin'
+
+        ]);
         User::factory(10)->create();
         Brand::factory(10)->create();
         Discount::factory(10)->create();

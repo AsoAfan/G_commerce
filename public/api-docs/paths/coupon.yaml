@@ -1,7 +1,7 @@
 coupon-create:
   post:
-    summery: Create a coupon
-    description: Create a coupon valid for limited date
+    summary: Create new coupon ✅
+    description: Create a coupon valid for limited date. <a href="/img/Create-new-Coupon.png" target="_blank">Code snippet</a>
     tags:
       - Coupons
 
@@ -17,14 +17,14 @@ coupon-create:
 
 coupons:
   get:
-    summery: ""
-    description: Get all coupons with pagination
+    summary: Get All Coupons ✅
+    description: Get all coupons with pagination. <a href="/img/Get-All-Coupon.png" target="_blank">Code snippet</a>
     tags:
       - Coupons
     parameters:
       - $ref: '../components/parameters.yaml#/page'
       - $ref: '../components/parameters.yaml#/limit'
-    
+
     responses:
       200:
         $ref: '../components/responses.yaml#/paginatedResponse/200'
@@ -32,3 +32,54 @@ coupons:
         $ref: '../components/responses.yaml#/generalResponse/404'
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
+
+coupons-{code}:
+  get:
+    summary: Check and Get ✅
+    description: Check for applied coupon and get discount ratio. <a href="/img/Get-single-coupon.png" target="_blank">Code snippet</a>
+    tags:
+      - Coupons
+    parameters:
+      - $ref: '../components/parameters.yaml#/coupons/code'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/couponResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      429:
+        $ref: '../components/responses.yaml#/generalResponse/429'
+  put:
+    summary: Update coupon ✅
+    description: update a coupon. <a href="/img/Update-a-coupon.png" target="_blank">Code snippet</a>
+    tags:
+      - Coupons
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/couponRequest/update'
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/update/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+  delete:
+    summary: Delete coupon ✅
+    description: Delete coupon permanently. <a href="/img/Delete-a-coupon.png" target="_blank">Code snippet</a>
+    tags:
+      - Coupons
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
+

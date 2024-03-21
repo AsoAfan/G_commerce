@@ -13,8 +13,7 @@ class StoreLocationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-//        return $this->user();
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -28,7 +27,8 @@ class StoreLocationRequest extends FormRequest
             'city' => 'required',
             'type' => ['required', 'in:apartment,house'],
             'longitude' => ['required'],
-            'latitude' => ['required']
+            'latitude' => ['required'],
+            'note' => 'max:500'
         ];
     }
 

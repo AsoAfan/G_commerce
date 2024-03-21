@@ -8,28 +8,22 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\StoreRatingRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\RatingResource;
 use App\Models\Attribute;
 use App\Models\Product;
-use App\Models\Rating;
 use App\Services\PaginationService;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
 
     public function index(PaginationService $paginationService, GetResourcesRequest $request)
     {
-//        return Product::query()->filter([]);
-
-//        dd($request->input('$test'));
-//        DB::enableQueryLog();
         ['data' => $data, 'hasNextPage' => $hasNext] = $paginationService->paginate(
-
-            Product::query()
-            , ['attributes', 'ratings', 'brand', 'discount']);
-
-//        return (DB::getQueryLog());
-
+            Product::withCount('ratings')
+            , ['attributes', 'ratings', 'brand', 'discount']
+        );
 
         return [
             'message' => 'succeed',
@@ -42,14 +36,14 @@ class ProductController extends Controller
     public function search(PaginationService $paginationService, SearchRequest $request)
     {
 
-        if (empty($request->all())) return "Nothing";
+        if (empty($request->all())) return [];
 
         ['data' => $data, 'hasNextPage' => $hasNext] = $paginationService->paginate(
 
             Product::query()
                 ->filter($request->only(['s', 'attributes', 'brand', 'category', 'subcategory', 'groups']))
                 ->withCount('ratings')
-            , ['ratings', 'brand', 'discount', 'subCategories']);
+            , ['attributes', 'ratings', 'brand', 'discount', 'subCategories']);
 
 //        return (DB::getQueryLog());
 
@@ -66,7 +60,6 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
 
-//        dd($request->all(), $request->except('attributes'));
         $newProduct = Product::create([
             "name" => $request->post('name'),
             'description' => $request->post('description'),
@@ -101,12 +94,14 @@ class ProductController extends Controller
                 'image_path' => $attribute['image_path'],
                 'image_name' => $attribute['image_name'],
                 'price' => $attribute['price'],
-                'currency' => $attribute['currency'],
-                'quantity' => $attribute['quantity'],
+                'currency' => $attribute['currency'] ?? "IQD",
+                'quantity' => $attribute['quantity'] ?? 0,
             ]);
         }
+        $newProduct->load('attributes');
         return response([
             'message' => firstWord($newProduct->name) . " Added successfully",
+            'data' => ['resource' => new ProductResource($newProduct)],
             'code' => 201
         ], 201);
     }
@@ -114,48 +109,37 @@ class ProductController extends Controller
 
     public function rate(Product $product, StoreRatingRequest $request)
     {
-
-        $rating = Rating::create([
+        $rating = $product->ratings()->create([
             'rating' => $request->post('rating'),
-            'review' => $request->post('review')
+            'review' => $request->post('review'),
+            'user_id' => Auth::id(),
         ]);
-
-        $product->ratings()->attach($rating);
+        $rating->load('user');
         return response([
             'message' => "Thank you for your feedback",
-            'data' => ['id' => $rating->id],
+            'data' => ['resource' => new RatingResource($rating)],
             'code' => 200
         ]);
     }
 
     public function favourite(Product $product)
     {
-//        return "HI";
-//        dd(auth()->user()->products);
+        $fav = auth()->user()->products()->toggle($product);
 
-        $test = auth()->user()->products()->toggle($product);
+//        return $fav;
 
-//        return $test;
-
-        return ['message' => firstWord($product->name) . ($test['attached'] ? " added to" : " removed from") . " favourite list", 'code' => 200];
+        return ['message' => firstWord($product->name) . ($fav['attached'] ? " added to" : " removed from") . " favourite list", 'code' => 200];
 
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Product $product)
     {
-//        dd($id);
-
-
-        $product = Product::where('id', $id)->first();
-        if (!$product)
-            return missingRoute();
-
-        $product->load(['discount', 'attributes', 'subCategories']);
-
-
+        // TODO: paginate ratings later
+        $product->load(['ratings', 'discount', 'attributes', 'subCategories'])
+            ->loadCount('ratings');
         return [new ProductResource($product)];
     }
 
@@ -182,11 +166,13 @@ class ProductController extends Controller
                 'currency' => $attribute['currency'],
                 'image_path' => $attribute['image_path'],
                 'image_name' => $attribute['image_name'],
-                'quantity' => $attribute['quantity'],
+                'quantity' => $attribute['quantity'] ?? 0,
             ];
+//            dump($values);
         }
 
         try {
+//            dump($values);
             $product->attributes()->syncWithoutDetaching($values);
         } catch (QueryException) {
             return response([
@@ -197,7 +183,6 @@ class ProductController extends Controller
         }
 
         $product->load('attributes');
-
         return [
             'message' => "Product updated successfully",
             'data' => ['resource' => new ProductResource($product)],
@@ -211,26 +196,24 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        if ($product->delete()) {
-            return [
-                'message' => "Product deleted successfully",
-                'data' => ['id' => $product->id],
-                'code' => 200
-            ];
-        } else {
-            $code = response()->getStatusCode();
-            return response(['message' => "An error occurred", 'code' => $code], $code);
-        }
+        $product->delete();
+        return [
+            'message' => "Product deleted successfully",
+            'data' => ['id' => $product->id],
+            'code' => 200
+        ];
+
 
     }
 
     public function destroyPermanently(Product $product)
     {
-        if ($product->forceDelete()) {
-            return ['message' => "Product deleted successfully", 'code' => 200];
-        } else {
-            $code = response()->getStatusCode();
-            return response(['message' => "An error occurred", 'code' => $code], $code);
-        }
+        $product->forceDelete();
+
+        return [
+            'message' => "Product deleted successfully",
+            'data' => ['id' => $product->id],
+            'code' => 200
+        ];
     }
 }

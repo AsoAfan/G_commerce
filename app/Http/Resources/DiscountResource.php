@@ -14,11 +14,15 @@ class DiscountResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+//        dump($this->products());
+
+
         return [
             'id' => $this->id,
             'ratio' => $this->ratio,
             'starts_at' => $this->starts_at,
-            'expires_at' => $this->expires_at
+            'expires_at' => $this->expires_at,
+            'products' => ProductResource::collection($this->whenLoaded('products'))
 
         ];
     }

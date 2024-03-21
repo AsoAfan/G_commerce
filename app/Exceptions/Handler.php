@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,11 +25,8 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
 
-        $this->renderable(function (NotFoundException $e, Request $request) {
-
-            return response([
-                'message' => "Not found", 'code' => 404
-            ], 404);
+        $this->renderable(function (Throwable $e) {
+            //
         });
 
         $this->reportable(function (Throwable $e) {
@@ -37,4 +34,13 @@ class Handler extends ExceptionHandler
         });
 
     }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        // TODO: redirect to front-end login page
+        return $this->shouldReturnJson($request, $exception)
+            ? response()->json(['message' => $exception->getMessage(), 'code' => 401], 401)
+            : redirect()->guest($exception->redirectTo() ?? route('login'));
+    }
+
 }

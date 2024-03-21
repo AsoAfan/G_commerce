@@ -25,8 +25,8 @@ class StoreCouponRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'unique:coupons,code|min:3',
-            'ratio' => 'numeric',
+            'code' => 'required|unique:coupons,code|min:3',
+            'ratio' => 'required|numeric',
             'starts_at' => 'date',
             'expires_at' => ['date', 'after:starts_at']
         ];

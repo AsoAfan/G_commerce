@@ -1,25 +1,83 @@
 discounts-create:
   post:
-    summary: Creates new discount(This endpoint may be removed later)
+    summary: Creates new discount ✅
     description: creates new Discount.
-      <a href = "http://127.0.0.1:8000/img/NewDiscount.png" target="_blank">See Code Snippet</a>
-
+      <a href ="/img/Create-new-discount.png" target="_blank">Code Snippet</a>
     tags:
       - Discounts
     requestBody:
       $ref: '../components/requestBodies.yaml#/discountRequest/create'
 
+    security:
+      - ApiKey: [ ]
+
     responses:
       201:
         $ref: '../components/responses.yaml#/generalResponse/201'
 
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
 
+discounts-{id}:
+  get:
+    summary: Get single discount ✅
+    description: Get information of specified discount. <a href="/img/Get-one-discount.png" target="_blank">Code snippet</a>
+    tags:
+      - Discounts
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/discountResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+  put:
+    summary: update discount ✅
+    description: Update specified discount. <a href="img/Update-discount.png" target="_blank">Code snippet</a>
+    tags:
+      - Discounts
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/discountRequest/update'
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    security:
+      - ApiKey: [ ]
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/update/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+  delete:
+    summary: Delete discount ✅
+    description: Delete specified discount. <a href="img/Delete-discount.png" target="_blank">Code snippet</a>
+    tags:
+      - Discounts
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    security:
+      - ApiKey: [ ]
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
 discounts:
   get:
-    summery: Get all discounts
-    description: Retrieve all discounts with pagination
+    summary: Get all discounts. ✅
+    description: Retrieve all discounts with pagination. <a href="/img/Get-all-discounts.png" target="_blank">Code snippet</a>
     parameters:
       - $ref: '../components/parameters.yaml#/page'
       - $ref: '../components/parameters.yaml#/limit'
@@ -31,3 +89,6 @@ discounts:
 
       404:
         $ref: '../components/responses.yaml#/generalResponse/404'
+
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'

@@ -1,8 +1,151 @@
+products-create:
+  post:
+    summary: Creates new product ✅
+    description: creates new product with its attributes and there value.
+      <a href="img/Create-new-product.png" target="_blank">Code snippet</a>
+    tags:
+      - Products
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/productRequest/create'
+    security:
+      - ApiKey: [ ]
+    responses:
+      201:
+        $ref: '../components/responses.yaml#/generalResponse/201'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+products-{id}:
+  get:
+    summary: Get single product ✅
+    description: Get information of specified product. <a href="img/Get-single-product.png" target="_blank">Code snippet</a>
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/productResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
+  put:
+    summary: update product ✅
+    description: Update specific product. <a href="img/Update-a-product.png" target="_blank">Code snippet</a>
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/productRequest/update'
+    security:
+      - ApiKey: [ ]
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/update/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+
+  delete:
+    summary: Move product to Trash ✅
+    description: Delete specified product. <a href="img/Delete-a-product.png" target="_blank">Code snippet</a>
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    security:
+      - ApiKey: [ ]
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
+delete-product-permanently:
+  delete:
+    summary: Delete product permanently ✅
+    description: Delete specified product from Trash.
+      <a href="img/Delete-a-product-permanently.png" target="_blank">Code snippet</a>
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    security:
+      - ApiKey: [ ]
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
+products-{id}-rate:
+  post:
+    summary: Get feedback from user ✅
+    description: Rate the product and leave your review.
+      <a href="img/Rate-a-product.png" target="_blank">Code snippet</a>
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/productRequest/rate'
+    security:
+      - ApiKey: [ ]
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/productResponse/rate/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+products-{id}-favourite:
+  post:
+    summary: Add/Remove product to/from fav list ✅
+    description: Add or remove a product to/from favourite list.
+      <a href="img/Add_remove-product-to_from-favourite-list.png" target="_blank">Code snippet</a>
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    security:
+      - ApiKey: [ ]
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/productResponse/favourite/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+products-search:
+  get:
+    summary: filter products ✅
+    description: search for products. <a href="img/Search-product.png" target="_blank">Code snippet</a>
+    tags:
+      - Products
+    parameters:
+      - $ref: '../components/parameters.yaml#/products/s'
+      - $ref: '../components/parameters.yaml#/products/attributes'
+      - $ref: '../components/parameters.yaml#/products/brand'
+      - $ref: '../components/parameters.yaml#/products/category'
+      - $ref: '../components/parameters.yaml#/products/groups'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/paginatedResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
 products:
   get:
-    summery: ''
-    description: Get all Products with pagination
-
+    summary: Get all products ✅
+    description: Get all Products with pagination. <a href="img/Get-all-products.png" target="_blank">Code snippet</a>
     tags:
       - Products
     parameters:
@@ -15,118 +158,5 @@ products:
 
       404:
         $ref: '../components/responses.yaml#/generalResponse/404'
-products-create:
-  post:
-    summary: Creates new product
-    description: creates new product with its attributes and there value.
-      <a href = "http://127.0.0.1:8000/img/NewProduct.png" target="_blank">See Code Snippet</a>
-    tags:
-      - Products
-    requestBody:
-      $ref: '../components/requestBodies.yaml#/productRequest/create'
-    responses:
-      201:
-        $ref: '../components/responses.yaml#/generalResponse/201'
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
-
-products-{id}:
-  get:
-    summary: Get one product
-    description: Retrieve one product with its id
-    tags:
-      - Products
-    parameters:
-      - $ref: '../components/parameters.yaml#/id'
-    responses:
-      200:
-        $ref: '../components/responses.yaml#/productResponse/200'
-
-  put:
-    summary: ""
-    description: Update product
-    tags:
-      - Products
-    parameters:
-      - $ref: '../components/parameters.yaml#/id'
-    requestBody:
-      $ref: '../components/requestBodies.yaml#/productRequest/update'
-
-    responses:
-      200:
-        $ref: '../components/responses.yaml#/generalResponse/update/200'
-      404:
-        $ref: '../components/responses.yaml#/generalResponse/404'
-      422:
-        $ref: '../components/responses.yaml#/generalResponse/422'
-
-  delete:
-    summary: "Move product to Trash NOT DONE"
-    description: Delete specified product. <a href="/img/deleteProduct.png" target="_blank">code snippet</a>
-    tags:
-      - Products
-    parameters:
-      - $ref: '../components/parameters.yaml#/id'
-    responses:
-      200:
-        $ref: '../components/responses.yaml#/generalResponse/delete/200'
-
-      404:
-        $ref: '../components/responses.yaml#/generalResponse/404'
-
-delete-product-permanently:
-  delete:
-    summary: "Delete product permanently NOT DONE"
-    description: Delete specified product from Trash. <a href="/img/deleteProductPermanent.png" target="_blank">code snippet</a>
-    tags:
-      - Products
-    parameters:
-      - $ref: '../components/parameters.yaml#/id'
-    responses:
-      200:
-        $ref: '../components/responses.yaml#/generalResponse/delete/200'
-
-      404:
-        $ref: '../components/responses.yaml#/generalResponse/404'
-
-
-products-{id}-rate:
-  post:
-    summery: ""
-    description: Rate the product and leave your review
-    tags:
-      - Products
-    parameters:
-      - $ref: '../components/parameters.yaml#/id'
-    requestBody:
-      $ref: '../components/requestBodies.yaml#/productRequest/rate'
-    responses:
-      200:
-        $ref: '../components/responses.yaml#/generalResponse/200'
-products-{id}-favourite:
-  post:
-    summery: ""
-    description: Add a product to favourite list
-    tags:
-      - Products
-    parameters:
-      - $ref: '../components/parameters.yaml#/id'
-    security:
-      - ApiKey: [ ]
-    responses:
-      200:
-        $ref: '../components/responses.yaml#/productResponse/favourite/200'
-products-search:
-  get:
-    description: Good
-    tags:
-      - Products
-    parameters:
-      - $ref: '../components/parameters.yaml#/products/s'
-      - $ref: '../components/parameters.yaml#/products/attributes'
-      - $ref: '../components/parameters.yaml#/products/brand'
-      - $ref: '../components/parameters.yaml#/products/category'
-      - $ref: '../components/parameters.yaml#/products/groups'
-    responses:
-      200:
-        $ref: '../components/responses.yaml#/generalResponse/200'

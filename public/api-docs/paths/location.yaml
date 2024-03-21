@@ -1,9 +1,12 @@
 locations-create:
   post:
-    summery:
-    description: Create new location for authenticated user
+    summary: Creates new location ✅
+    description: Create new location for authenticated user. <a href="img/Create-new-location.png" target="_blank">Code snippet</a>
     tags:
-      - Locations
+      - Location
+
+    security:
+      - ApiKey: [ ]
 
     requestBody:
       $ref: '../components/requestBodies.yaml#/locationRequest/create'
@@ -11,5 +14,67 @@ locations-create:
     responses:
       201:
         $ref: '../components/responses.yaml#/generalResponse/201'
+
+locations-{id}:
+  # Get
+  #  get:
+  #    summary: Get single location
+  #    description: Get details of specified location
+  #    tags:
+  #      - Location
+  #    parameters:
+  #      - $ref: '../components/parameters.yaml#/id'
+  #    responses:
+  #      200:
+  #        $ref: '../components/responses.yaml#/generalResponse/200'
+
+  put:
+    summary: Update location ✅
+    description: Update specified location. <a href="img/Update-a-location.png" target="_blank">Code snippet</a>
+    tags:
+      - Location
+    security:
+      - ApiKey: [ ]
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/locationRequest/create'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/update/200'
+  delete:
+    summary: Delete location ✅
+    description: Delete specified location. <a href="img/Delete-a-location.png" target="_blank">Code snippet</a>
+    tags:
+      - Location
+    security:
+      - ApiKey: [ ]
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+
+locations:
+  get:
+    summary: Get all locations ✅
+    description: Get all locations for current user with pagination. <a href="img/Get-all-locations.png" target="_blank">Code snippet</a>
+    tags:
+      - Location
+    security:
+      - ApiKey: [ ]
+    parameters:
+      - $ref: '../components/parameters.yaml#/page'
+      - $ref: '../components/parameters.yaml#/limit'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/locationResponse/paginated/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
 
 

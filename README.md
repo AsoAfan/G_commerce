@@ -47,7 +47,7 @@ php artisan serve
 #### REST API:
 
 - base url: [http://127.0.0.1:8000/api](http://127.0.0.1:8000/api)
-- docs: [http://127.0.0.1:8000](http://127.0.0.1:8000/docs)
+- docs: [http://127.0.0.1:8000](http://127.0.0.1:8000/)
 
 #### GraphQL API <sub>(not available yet)</sub>
 

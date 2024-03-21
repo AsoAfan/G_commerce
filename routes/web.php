@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\PasswordReset;
+use App\Notifications\LoginAttemptNotification;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +29,15 @@ Route::get('/sanctum/csrf-cookie', function () {
     ];
 });
 
+Route::get('/reset/{token:token}', function (PasswordReset $token) {
+//    dd($token);
+    return view('reset_password', ['token' => $token]);
+});
+
+Route::get('/test', function () {
+    $user = \App\Models\User::all()->first();
+    return (new LoginAttemptNotification())->toMail(Notification::route('mail', "aso.afan@yahoo.com"));
+});
 
 require __DIR__ . '/web/guest.php';
 

@@ -22,12 +22,13 @@ class UserController extends Controller
      */
     public function index(PaginationService $paginator, GetAllUsersRequest $request)
     {
-        ['data' => $data, 'hasNextPage' => $hasNext] = $paginator->paginate(User::all());
+        ['data' => $data, 'hasNextPage' => $hasNext] = $paginator->paginate(User::query());
 //        return UserRes
         return [
             'message' => "succeed",
-            'data' => [UserResource::collection($data)],
-            'hasNextPage' => $hasNext
+            'data' => UserResource::collection($data),
+            'meta' => ['hasNextPage' => $hasNext],
+            'code' => 200
         ];
     }
 
@@ -37,19 +38,17 @@ class UserController extends Controller
     public function store(RegistrationRequest $request)
     {
 
-//        if ($validator->fails()) return response(['message' => $validator->messages()->all()], 400);
         try {
             $newUser = User::create($request->only(['username', 'email', 'password']));
-            return $this->sendOtp($newUser->email);
+            return $this->send($newUser->email);
 
-        } catch (UniqueConstraintViolationException $e) {
+        } catch (UniqueConstraintViolationException) {
 
             return response([
                 'message' => 'Email already assigned to another account',
                 'code' => 400
             ], 400);
         }
-//        return ['message' => "verify Email sent", 'data' => ['parameter' => $verify_param]];
 
     }
 

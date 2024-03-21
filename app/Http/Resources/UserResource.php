@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'image_path' => $this->image_path,
             'image_name' => $this->image_name,
             'role' => $this->role,
-//            'card' => CardRecource::collection()
+//            'card' => CardResource::collection()
         ];
     }
 }

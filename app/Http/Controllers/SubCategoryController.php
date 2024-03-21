@@ -39,7 +39,7 @@ class SubCategoryController extends Controller
 
         return response([
             'message' => ucfirst($newSubcategories->name) . " subcategory created successfully",
-            'data' => ['id' => $newSubcategories->id],
+            'data' => ['resource' => $newSubcategories],
             'code' => 201
         ], 201);
 

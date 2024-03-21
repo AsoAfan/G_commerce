@@ -2,10 +2,20 @@
 
 namespace App\Http\Requests;
 
+use App\Exceptions\TooManyRequestsException;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class OtpResendRequest extends FormRequest
 {
+    private int $maxAttempts = 5;
+
+    protected function prepareForValidation(): void
+    {
+        $this->makeSureNotRateLimited();
+    }
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -22,7 +32,26 @@ class OtpResendRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required | email | exists:users,email'
+            'email' => 'required | email'
         ];
+    }
+
+    /**
+     * @throws TooManyRequestsException
+     */
+    public function makeSureNotRateLimited(): void
+    {
+        RateLimiter::hit($this->throttleKey());
+
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), $this->maxAttempts))
+            return;
+
+        throw new TooManyRequestsException();
+    }
+
+    private function throttleKey(): string
+    {
+        return Str::lower("otp|" . $this->email . "|" . $this->ip());
+
     }
 }

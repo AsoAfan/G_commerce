@@ -21,6 +21,7 @@ class AttributeResource extends JsonResource
             "name" => $this->name,
             "value" => $this->whenPivotLoaded('values', fn() => $this->pivot->value),
             "display_type" => $this->whenPivotLoaded('values', fn() => $this->pivot->display_type),
+            'quantity' => $this->whenPivotLoaded('values', fn() => $this->pivot->quantity),
             'price' => $this->whenPivotLoaded('values', fn() => $this->pivot->price),
             'currency' => $this->whenPivotLoaded('values', fn() => $this->pivot->currency),
             'image_path' => $this->whenPivotLoaded('values', fn() => $this->pivot->image_path),

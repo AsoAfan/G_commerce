@@ -14,7 +14,7 @@ class StoreRatingRequest extends FormRequest
     public function authorize(): bool
     {
 //        return $this->user();
-        return true;
+        return auth()->check();
     }
 
     /**

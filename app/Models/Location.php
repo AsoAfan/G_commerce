@@ -10,9 +10,9 @@ class Location extends Model
 {
     use HasFactory, HasUuids;
 
-    public function users()
+    public function user()
     {
-        $this->hasMany(User::class);
+        return $this->belongsTo(User::class);
     }
 
 

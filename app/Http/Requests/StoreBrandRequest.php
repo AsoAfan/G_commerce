@@ -13,8 +13,7 @@ class StoreBrandRequest extends FormRequest
      */
     public function authorize(): bool
     {
-//        return auth()->user()->role;
-        return true;
+        return auth()->user()->role == 'admin';
     }
 
     /**
@@ -26,7 +25,6 @@ class StoreBrandRequest extends FormRequest
     {
         return [
             'name' => ['required', 'unique:brands,name'],
-//            'logo_path' => ['required'],
             'logo_name' => ['required_with:logo_path']
         ];
     }

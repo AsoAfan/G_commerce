@@ -20,6 +20,7 @@ class CategoryResource extends JsonResource
             'slug' => $this->slug,
             'image_path' => $this->image_path,
             'image_name' => $this->image_name,
+            'products_number' => $this->whenCounted('products'),
             'discount' => $this->whenLoaded('discount', new DiscountResource($this->discount))
         ];
     }

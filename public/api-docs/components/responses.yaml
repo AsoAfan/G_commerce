@@ -33,10 +33,160 @@ productResponse:
               code:
                 type: number
                 example: 200
+  rate:
+    200:
+      description: created successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Thank you for your feedback
+              data:
+                type: object
+                properties:
+                  resource:
+                    $ref: '../components/schemas.yaml#/Rating'
+
+brandResponse:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 27
+            name:
+              type: string
+              example: Samsung
+            logo_path:
+              type: string
+              example: path/to/logo/nike.png
+            logo_name:
+              type: string
+              example: nike.png
+            products_number:
+              type: number
+              example: 27
+
+categoryResponse:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          $ref: './schemas.yaml#/Category'
+couponResponse:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Coupon applied successfully
+            data:
+              type: object
+              properties:
+                ratio:
+                  type: number
+                  description: whole number form of discount ratio
+                  example: 3
+            code:
+              type: number
+              example: 200
+
+discountResponse:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            ratio:
+              type: number
+              example: 25
+            starts_at:
+              type: string
+              format: date
+              example: "2024-03-16 11:17:09"
+            expires_at:
+              type: string
+              format: date
+              example: "2024-03-23 11:17:09"
+            products:
+              type: array
+              items:
+                $ref: '../components/schemas.yaml#/Product'
+
+groupResponse:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: half discount
+
+            discount_id:
+              type: string
+              pattern: '^[0-9a-fA-F\-]{36}$'
+
+            end_date:
+              type: string
+              example: "2024-01-024T21:09:55.000000Z"
+            discount:
+              $ref: './schemas.yaml#/Discount'
+            products:
+              type: array
+              items:
+                $ref: './schemas.yaml#/Product'
+
+locationResponse:
+  paginated:
+    200:
+      description: Operation succeed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+
+              message:
+                type: string
+                example: succeed
+              data:
+                type: array
+                items:
+                  $ref: './schemas.yaml#/paginatedLocation'
+              meta:
+                type: object
+                properties:
+                  hasNextPage:
+                    type: boolean
+                    example: false
+              code:
+                type: number
+                example: 200
+
+
+
+
 
 
 userResponse:
-  verify-{slug}:
+  verify-slug:
     200:
       description: Email verified successfully
       content:
@@ -50,9 +200,34 @@ userResponse:
               code:
                 type: integer
                 example: 200
-              data:
-                example:
-                  - time:2024-01-06T21:09:55.000000Z
+    400:
+      description: wrong code
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Invalid verification code
+              code:
+                type: integer
+                example: 400
+
+    403:
+      description: you are late this time
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Code has been expired
+              code:
+                type: integer
+                example: 403
+
 
   emailSent:
     200:
@@ -66,11 +241,29 @@ userResponse:
                 type: string
                 example: verify Email sent
               data:
-                type: string
-                example: 2y10btzqnvt8tyy5qwyokuzydgbnmebxa9pwnmdalqkzqgczzmnzi9
+                type: object
+                properties:
+                  slug:
+                    type: string
+                    example: 2y10btzqnvt8tyy5qwyokuzydgbnmebxa9pwnmdalqkzqgczzmnzu6
               code:
                 type: integer
                 example: 200
+  password-reset:
+    200:
+      description: Operation succeed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Password reset succeed
+              code:
+                type: number
+                example: 200
+
 
   login:
     200:
@@ -165,7 +358,7 @@ paginatedResponse:
                 properties:
                   NOTE:
                     type: string
-                    example: This data can be vary depending on the model described in Schemas section below
+                    example: Will be updated soon...
             meta:
               type: object
               properties:
@@ -234,7 +427,7 @@ generalResponse:
                     properties:
                       NOTE:
                         type: string
-                        example: This data can be vary depending on the model described in Schemas section below
+                        example: This will be updated soon...
 
 
 
@@ -254,9 +447,9 @@ generalResponse:
               type: object
               description: id type is vary depending on model
               properties:
-                id:
+                NOTE:
                   type: string
-                  example: 9b397a94-4797-4697-948b-a590f476128b
+                  example: This data can be vary depending on the model Refer to schema section
 
             code:
               type: integer
@@ -284,6 +477,9 @@ generalResponse:
             message:
               type: string
               example: Unauthenticated.
+            code:
+              type: number
+              example: 401
   404:
     description: Not found
     content:

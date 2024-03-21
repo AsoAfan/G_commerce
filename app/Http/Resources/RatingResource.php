@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -14,18 +15,15 @@ class RatingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        //        dd($this[0]);
-
-
         return [
             'id' => $this->id,
-            'username' => $this->username,
-            'image_path' => $this->image_path,
-            'image_name' => $this->image_name,
             'rating' => $this->rating,
-            'review' => $this->review
-
-
+            'review' => $this->review,
+            'user' => $this->whenLoaded('user', fn(User $user) => [
+                'username' => $user->username,
+                'image_path' => $user->image_path,
+                'image_name' => $user->image_name
+            ])
         ];
     }
 }

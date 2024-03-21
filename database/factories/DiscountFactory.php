@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Discount;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Discount>
+ * @extends Factory<Discount>
  */
 class DiscountFactory extends Factory
 {
@@ -19,7 +20,7 @@ class DiscountFactory extends Factory
         $starts_at = $this->faker->dateTime();
         $expires_at = $this->faker->dateTimeBetween($starts_at, now()->addDays(rand(1, 10)));
         return [
-            'ratio' => $this->faker->randomFloat(2, 0.01, 0.9),
+            'ratio' => $this->faker->numberBetween(1, 100),
             'starts_at' => $starts_at,
             'expires_at' => $expires_at
         ];

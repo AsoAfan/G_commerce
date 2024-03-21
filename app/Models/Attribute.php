@@ -24,6 +24,7 @@ class Attribute extends Model
                 'image_path',
                 'image_name',
                 'price',
+                'quantity',
                 'currency'
             ]);
     }

@@ -1,7 +1,7 @@
 categories:
   get:
-    summery: ""
-    description: Get all categories with their discounts
+    summary: Get All Categories ✅
+    description: Get all categories with their discounts. <a href="/img/Get-All-Categories.png" target="_blank">Code snippet</a>
     tags:
       - Categories
     parameters:
@@ -17,10 +17,14 @@ categories:
         $ref: '../components/responses.yaml#/generalResponse/422'
 categories-create:
   post:
-    summery: Create new category
-    description: Create new category
+    summary: Create new category ✅
+    description: Create new category. <a href="/img/Create-new-Category.png" target="_blank">Code snippet</a>
     tags:
       - Categories
+
+
+    security:
+      - ApiKey: [ ]
 
     requestBody:
       $ref: '../components/requestBodies.yaml#/categoryRequest/create'
@@ -29,5 +33,59 @@ categories-create:
       201:
         $ref: '../components/responses.yaml#/generalResponse/201'
 
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
+
+categories-{id}:
+  get:
+    summary: Get Single Category ✅
+    description: Get information of specified category. <a href="/img/Get-Single-Category.png" target="_blank">Code snippet</a>
+    tags:
+      - Categories
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/categoryResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+  put:
+    summary: Update category ✅
+    description: Update a category <a href="/img/Update-Category.png" target="_blank">Code snippet</a>
+    tags:
+      - Categories
+
+    security:
+      - ApiKey: [ ]
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/categoryRequest/create'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/update/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+  delete:
+    summary: Delete category ✅
+    description: Delete a category permanently. <a href="/img/Delete-Category.png" target="_blank">Code Snippet</a>
+    tags:
+      - Categories
+    security:
+      - ApiKey: [ ]
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'

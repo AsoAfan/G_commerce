@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class GetAllUsersRequest extends FormRequest
 {
@@ -26,5 +28,14 @@ class GetAllUsersRequest extends FormRequest
             'page' => 'gt:0'
 
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response([
+            'message' => 'Validation failed',
+            'errors' => $validator->errors()->all(),
+            'code' => 422
+        ], 422));
     }
 }

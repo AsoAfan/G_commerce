@@ -7,13 +7,13 @@ use App\Models\User;
 trait SocialTrait
 {
 
-    public function findOrCreate($socialUser)
+    public function findOrCreate($socialUser): User
     {
 
         $user = User::where('email', $socialUser->getEmail())->first();
 
         return $user ?: User::create([
-            'name' => $socialUser->getName(),
+            'username' => $socialUser->getName(),
             'email' => $socialUser->getEmail(),
             'email_verified_at' => now(),
         ]);

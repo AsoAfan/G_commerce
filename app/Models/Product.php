@@ -29,26 +29,21 @@ class Product extends Model
          * 2. attribute values
          * 3. brand
          * 4. category
-         * 5. group
-         *
-         *
-         *
+         * 5. subcategory
+         * 6. group
          */
 
         // 1. search by name and description
-        $query->when($filters['s'] ?? false, function ($query, $searchTerm) {
-            $query
-                ->where('name', "LIKE", "%$searchTerm%")
-                ->orWhere('description', 'LIKE', "%$searchTerm%");
-        }
+        $query->when($filters['s'] ?? false, fn($query, $searchTerm) => $query
+            ->where('name', "LIKE", "%$searchTerm%")
+            ->orWhere('description', 'LIKE', "%$searchTerm%")
+
         );
 
-        // 2. filter by attributes => attributes:attr_name:attr_value,attr_name2:attr_value2
+        // 2. filter by attributes => attributes=attr_name:attr_value,attr_name2:attr_value2
         $query->when($filters['attributes'] ?? false, function ($query) use ($filters) {
 
 
-            // Split the attributes and values
-//            $attributes = explode(',', $filters['attributes']);
             $attributes = collect(explode(",", $filters['attributes']))->map(
                 function ($attribute) {
                     [$name, $value] = explode(":", $attribute);
@@ -57,41 +52,37 @@ class Product extends Model
             );
 
 
-            // TODO: Better way (without loop)
+            // TODO: Better way (without loop)?
             foreach ($attributes as $attribute) {
 
-                $query->WhereHas('attributes', function (Builder $query) use ($attribute) {
+                $query->WhereHas('attributes', function ($query) use ($attribute) {
                     $query->where('name', $attribute['name'])->where('value', $attribute['value']);
                 });
             }
         });
 
         // 3. filter by brand
-        $query->when($filters['brand'] ?? false, function (Builder $query, $brand) {
-            $query->whereHas('brand', fn(Builder $query) => $query
-                ->where("id", $brand)
-            );
-        });
+        $query->when($filters['brand'] ?? false, fn(Builder $query, $brand) => $query->whereHas('brand', fn(Builder $query) => $query
+            ->where("id", $brand)
+        )
+        );
 
         // 4. category
-        $query->when($filters['category'] ?? false, function ($query) {
-            $query->whereHas('category', function ($query, $category) {
-                $query->where('id', $category);
-            });
+        $query->when($filters['category'] ?? false, fn($query) => $query->whereHas('category', fn($query, $category) => $query->where('id', $category)
+        )
+        );
 
-        });
-
+        // 5. subcategory
         $query->when($filters['subcategory'] ?? false, function (Builder $query, $subcategory) {
             $subcategories = explode(',', $subcategory);
 
-            $query->withCount('subcategories')->
-            whereHas('subCategories', function (Builder $query) use ($subcategories) {
-                $query->distinct()->whereIn('sub_categories.id', $subcategories);
-            }, count($subcategories));
+            $query->withCount('subcategories')
+                ->whereHas('subCategories', function (Builder $query) use ($subcategories) {
+                    $query->distinct()->whereIn('sub_categories.id', $subcategories);
+                }, count($subcategories));
 
         });
 
-        // 5. subcategory
         /* $query->when($filters['subcategory'] ?? false, fn(Builder $query) => $query
              ->whereHas('subCategories', fn(Builder $query, $id) => $query
                  ->where('id', $id)
@@ -99,7 +90,7 @@ class Product extends Model
          );*/
 
 
-        // group
+        // 6. group
         $query->when($filters['groups'] ?? false, function (Builder $query, $group) use ($filters) {
             $groups = explode(',', $group);
             $query
@@ -116,10 +107,9 @@ class Product extends Model
         return $this->belongsToMany(Product::class, 'favourites');
     }
 
-    public function ratings(): BelongsToMany
+    public function ratings()
     {
-        return $this->belongsToMany(User::class, 'ratings')
-            ->withPivot(['rating', 'review'])->select(['users.id', 'users.username', 'users.image_path', 'rating', 'review']);
+        return $this->hasMany(Rating::class);
     }
 
     public function averageRating()
@@ -164,7 +154,8 @@ class Product extends Model
                 'image_path',
                 'image_name',
                 'price',
-                'currency'
+                'currency',
+                'quantity'
             ]);
 
     }

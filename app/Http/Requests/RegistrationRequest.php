@@ -6,7 +6,6 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Rules\Password;
 
 class RegistrationRequest extends FormRequest
 {
@@ -28,12 +27,7 @@ class RegistrationRequest extends FormRequest
         return [
             'username' => 'required',
             'email' => ['required', 'email'],
-            'password' => [
-                'required',
-                'confirmed',
-                Password::min(8)
-
-            ]
+            'password' => ['required', 'confirmed', 'min:8']
         ];
     }
 

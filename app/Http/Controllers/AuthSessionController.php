@@ -16,14 +16,16 @@ class AuthSessionController extends Controller
 
     public function show()
     {
-        return new UserResource(Auth::user());
+        return [new UserResource(Auth::user())];
 
     }
 
 
     function store(LoginRequest $request)
     {
-        $user = User::where('email', $request->input('email'))->first();
+//        $request->makeSureNotRateLimited();
+
+        $user = User::where('email', $request->post('email'))->first();
 
         if (!$user) {
             return response([
@@ -32,8 +34,8 @@ class AuthSessionController extends Controller
             ], 404);
         }
 
-        return $this->
-        isVerified($user)
+
+        return $this->isVerified($user)
             ? $request->authenticate()
             : response([
                 'message' => "Verify email first",
@@ -42,15 +44,14 @@ class AuthSessionController extends Controller
             ], 403);
     }
 
-    function destroy()
+    public function destroy()
     {
-        (Auth::user()->tokens()->each(function ($token) {
-            $token->delete();
-        }));
-        // TODO: Logout other devices
-
-//        Auth::user()->tokens()->latest()->first()->delete();
-
+        /* (Auth::user()->tokens()->each(function ($token) {
+             $token->delete();
+         }));*/
+//        $user = Auth::user();
+        Auth::user()->currentAccessToken()->delete();
+        // TODO: redirect to login page
         return ['message' => "Logout succeed", 'code' => 200];
     }
 }

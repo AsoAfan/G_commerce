@@ -13,7 +13,7 @@ class StoreCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-//        return auth()->user()->role;
+//        return auth()->user()->role == "admin";
         return true;
     }
 

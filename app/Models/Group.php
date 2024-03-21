@@ -13,4 +13,9 @@ class Group extends Model
     {
         return $this->belongsToMany(Product::class);
     }
+
+    public function discount()
+    {
+        return $this->belongsTo(Discount::class);
+    }
 }

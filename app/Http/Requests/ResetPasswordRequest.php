@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class EmailVerificationRequest extends FormRequest
+class ResetPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class EmailVerificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'secret' => ['required', 'string']
+            'password' => ['required', 'min:8', 'confirmed']
         ];
     }
 }

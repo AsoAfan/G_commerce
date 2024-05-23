@@ -285,6 +285,31 @@ categoryRequest:
             discount_id:
               type: string
               pattern: '^[0-9a-fA-F\-]{36}$'
+cartRequest:
+  create:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            products:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    pattern: '^[0-9a-fA-F\-]{36}$'
+                  quantity:
+                    type: number
+                    example: 3
+                  attributes:
+                    type: object
+                    properties:
+                      <attr_id>:
+                        type: string
+                        example: <attr_value>
+
 
 groupRequest:
   create:
@@ -435,9 +460,6 @@ subcategoryRequest:
             slug:
               type: string
               example: Tablets
-            category_id:
-              type: number
-              example: 17
 
 locationRequest:
   create:

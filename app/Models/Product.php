@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,12 +14,7 @@ class Product extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['name'];
-
-//    protected $with = ['attributes'];
-
     protected $hidden = ['discount_id', 'category_id', 'brand_id'];
-
 
     public function scopeFilter(Builder $query, array $filters)
     {
@@ -102,10 +98,54 @@ class Product extends Model
 
     }
 
+    public function sold()
+    {
+        $this->decrement('attributes.quantity');
+
+    }
+
+    public function getBestDiscount()
+    {
+        return (max($this->getProductDiscount(), $this->getCategoryDiscount(), $this->getSubcategoriesDiscount(),
+                $this->getGroupsDiscount()) ?: 0) / 100;
+    }
+
+    public function getSubcategoriesDiscount()
+    {
+        /**
+         * @var Collection $subs
+         */
+        $subs = $this->subCategories?->map(fn(SubCategory $subCategory) => $subCategory->discount?->ratio);
+        return $subs->max();
+    }
+
+    public function getGroupsDiscount()
+    {
+        $groups = $this->groups?->map(fn(Group $group) => $group->discount?->ratio);
+        return $groups->max();
+    }
+
+    public function getProductDiscount()
+    {
+        return $this->discount?->ratio;
+    }
+
+    public function getCategoryDiscount()
+    {
+        return $this->category?->discount?->ratio;
+    }
+
+
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class)->withPivot(['quantity', 'id']);
+    }
+
     public function users()
     {
         return $this->belongsToMany(Product::class, 'favourites');
     }
+
 
     public function ratings()
     {

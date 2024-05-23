@@ -125,6 +125,15 @@ products-{id}-favourite:
         $ref: '../components/responses.yaml#/generalResponse/401'
       404:
         $ref: '../components/responses.yaml#/generalResponse/404'
+products-featured:
+  get:
+    summary: Special products ✅
+    description: Get featured products. <a href="img/Featured-products.png" target="_blank">Code snippet</a>
+    tags:
+      - Products
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/productResponse/featured/200'
 products-search:
   get:
     summary: filter products ✅

@@ -51,7 +51,7 @@ class OtpResendRequest extends FormRequest
 
     private function throttleKey(): string
     {
-        return Str::lower("otp|" . $this->email . "|" . $this->ip());
+        return Str::lower("otp|{$this->email}|{$this->ip()}");
 
     }
 }

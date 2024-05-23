@@ -5,6 +5,9 @@ coupon-create:
     tags:
       - Coupons
 
+    security:
+      - ApiKey: [ ]
+
     requestBody:
       $ref: '../components/requestBodies.yaml#/couponRequest/create'
 
@@ -53,6 +56,9 @@ coupons-{code}:
     description: update a coupon. <a href="/img/Update-a-coupon.png" target="_blank">Code snippet</a>
     tags:
       - Coupons
+
+    security:
+      - ApiKey: [ ]
     requestBody:
       $ref: '../components/requestBodies.yaml#/couponRequest/update'
     parameters:
@@ -72,6 +78,9 @@ coupons-{code}:
     description: Delete coupon permanently. <a href="/img/Delete-a-coupon.png" target="_blank">Code snippet</a>
     tags:
       - Coupons
+
+    security:
+      - ApiKey: [ ]
     parameters:
       - $ref: '../components/parameters.yaml#/id'
     responses:

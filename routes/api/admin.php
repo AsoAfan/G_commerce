@@ -55,7 +55,12 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         ->missing(fn() => missingRoute());
 
 
-    Route::post('/subcategories/create', [SubCategoryController::class, 'store']);
+    Route::post('{category}/subcategories/create', [SubCategoryController::class, 'store'])
+        ->missing(fn() => missingRoute());
+    Route::put('subcategories/{subcategory}', [SubCategoryController::class, 'update'])
+        ->missing(fn() => missingRoute());
+    Route::delete('subcategories/{subcategory}', [SubCategoryController::class, 'destroy'])
+        ->missing(fn() => missingRoute());
 
 
     Route::get('/users', [UserController::class, 'index']);

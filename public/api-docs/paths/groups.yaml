@@ -4,6 +4,9 @@ groups-create:
     description: Create a group of products and apply discount for them. <a href="img/Create-new-group.png" target="_blank">Code snippet</a>
     tags:
       - Groups
+
+    security:
+      - ApiKey: [ ]
     requestBody:
       $ref: '../components/requestBodies.yaml#/groupRequest/create'
 

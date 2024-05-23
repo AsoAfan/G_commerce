@@ -61,7 +61,7 @@ class LoginRequest extends FormRequest
     function authenticate()
     {
 
-        if (!Auth::attempt($this->only(['email', 'password']))) {
+        if (!Auth::attempt($this->only(['email', 'password']), $this->remember)) {
             return response(['message' => "Invalid credentials", 'code' => 400], 400);
         }
 
@@ -70,7 +70,7 @@ class LoginRequest extends FormRequest
             'code' => 200,
 
             'data' => [
-                "token" => Auth::user()->createToken('API Token')->plainTextToken,
+                "token" => Auth::user()->createToken($this->device_name())->plainTextToken,
                 'user' => new UserResource(Auth::user()),
             ],
 
@@ -92,6 +92,12 @@ class LoginRequest extends FormRequest
             Mail::to($this->email)->send(new LoginAttemptMail($this->email));
 
         throw new TooManyRequestsException();
+    }
+
+    public function device_name()
+    {
+        //                                      TODO: change later
+        return $this->device_name ?: $this->email . $this->ip();
     }
 
     private function throttleKey()

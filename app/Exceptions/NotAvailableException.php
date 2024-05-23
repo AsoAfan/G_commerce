@@ -4,13 +4,12 @@ namespace App\Exceptions;
 
 use Exception;
 
-class TooManyRequestsException extends Exception
+class NotAvailableException extends Exception
 {
+    protected $message = "The product is out of stock";
+    protected $code = 404;
 
-    protected $code = 429;
-    protected $message = "Too many requests, try again later";
-
-    public function render($request)
+    public function render()
     {
         return response([
             'message' => $this->message,

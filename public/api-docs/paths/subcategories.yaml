@@ -1,9 +1,16 @@
 subcategories-create:
   post:
-    summery:
-    description: Create subcategory associated with a category
+    summary: creates new subcategory ✅
+    description: Create subcategory associated with given category. <a href="img/Create-new-subcategory.png"
+      target="_blank">Code snippet</a>
     tags:
       - Subcategories
+
+    security:
+      - ApiKey: [ ]
+
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
 
     requestBody:
       $ref: '../components/requestBodies.yaml#/subcategoryRequest/create'
@@ -11,13 +18,70 @@ subcategories-create:
     responses:
       201:
         $ref: '../components/responses.yaml#/generalResponse/201'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
       422:
         $ref: '../components/responses.yaml#/generalResponse/422'
 
+subcategories-{id}:
+  get:
+    summary: Get single subcategory ✅
+    description: Get information of specific subcategory. <a href="img/Get-single-subcategory.png" target="_blank">Code
+      snippet</a>
+    tags:
+      - Subcategories
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/subcategoryResponse/200'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+  put:
+    summary: Update subcategory ✅
+    description: Update specific subcategory. <a href="img/Update-subcategory.png" target="_blank">Code snippet</a>
+    tags:
+      - Subcategories
+    security:
+      - ApiKey: [ ]
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/subcategoryRequest/create'
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/update/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+  delete:
+    summary: Delete subcategory ✅
+    description: Delete specific subcategory. <a href="img/Delete-subcategory.png" target="_blank">Code snippet</a>
+    tags:
+      - Subcategories
+    security:
+      - ApiKey: [ ]
+
+    parameters:
+      - $ref: '../components/parameters.yaml#/id'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/generalResponse/delete/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+
 subcategories:
   get:
-    summery: ""
-    description: Get all subcategories of specific category
+    summary: Get all subcategories ✅
+    description: Get all subcategories of specific category. <a href="img/Get-all-subcategories.png" target="_blank">Code snippet</a>
     tags:
       - Subcategories
     parameters:
@@ -28,7 +92,10 @@ subcategories:
     responses:
       200:
         $ref: '../components/responses.yaml#/paginatedResponse/200'
-#      - $ref: '../components/parameters.yaml#/slug'
+      404:
+        $ref: '../components/responses.yaml#/generalResponse/404'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
 
 
 

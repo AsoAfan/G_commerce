@@ -22,7 +22,8 @@ class SubCategoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
-            'discount' => new DiscountResource($this->whenNotNull($this->discount))
+            'category' => new CategoryResource($this->whenLoaded('category')),
+            'discount' => new DiscountResource($this->whenLoaded('discount'))
         ];
     }
 }

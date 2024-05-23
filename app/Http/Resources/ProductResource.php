@@ -22,17 +22,19 @@ class ProductResource extends JsonResource
             'id' => $this->id,
             "name" => $this->name,
             'description' => $this->description,
-            /*
             "price" => $this->price,
             "currency" => $this->currency,
+            "quantity" => $this->quantity,
             "image_name" => $this->image_name,
             "image_path" => $this->image_path,
-            */
+
+            "cart_quantity" => $this->whenPivotLoaded('cart_product', fn() => $this->pivot->quantity),
+
             'avg_rating' => $this->whenNotNull($this->averageRating()),
             'count_rating' => $this->whenCounted('ratings'),
-            "brand" => $this->whenLoaded('brand', new BrandResource($this->brand)),
-            "category" => $this->whenLoaded('category', new CategoryResource($this->category)),
-            "discount" => $this->whenLoaded('discount', new DiscountResource($this->discount)),
+            "brand" => $this->whenLoaded('brand'),
+            "category" => $this->whenLoaded('category'),
+            "discount" => $this->whenLoaded('discount'),
             "subcategories" => SubCategoryResource::collection($this->whenLoaded('subCategories')),
             "attributes" => AttributeResource::collection($this->whenLoaded('attributes')),
             'ratings' => RatingResource::collection($this->whenLoaded('ratings')),

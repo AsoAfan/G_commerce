@@ -24,7 +24,6 @@ class PaginationService
 
         $skip = ($page - 1) * $take;
 
-//        dd(i(Collection::class));
         $data = $queryBuilder->skip($skip)->take($take + 1);
 
         if ($queryBuilder instanceof Builder) {

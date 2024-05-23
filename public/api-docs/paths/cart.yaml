@@ -1,0 +1,35 @@
+carts-add:
+  post:
+    summary: Add to cart
+    description: Add products to cart
+    tags:
+      - Cart
+    security:
+      - ApiKey: [ ]
+    requestBody:
+      $ref: '../components/requestBodies.yaml#/cartRequest/create'
+
+    responses:
+      200:
+        $ref: '../components/responses.yaml#/cartResponse/200'
+      401:
+        $ref: '../components/responses.yaml#/generalResponse/401'
+      422:
+        $ref: '../components/responses.yaml#/generalResponse/422'
+  cart:
+    get:
+      summary: Get user cart
+      description: Get details of user's cart
+      tags:
+        - Cart
+      security:
+        - ApiKey: [ ]
+
+      responses:
+        200:
+          $ref: '../components/responses.yaml#/generalResponse/200'
+
+
+
+
+

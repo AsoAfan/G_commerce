@@ -13,8 +13,7 @@ class StoreSubCategoryRequest extends FormRequest
      */
     public function authorize(): bool
     {
-//        return $this->user()->role == 'admin';
-        return true;
+        return $this->user()->role == 'admin';
     }
 
     /**
@@ -25,7 +24,7 @@ class StoreSubCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'unique:sub_categories,name']
         ];
     }
 

@@ -27,7 +27,6 @@ class StoreProductRequest extends FormRequest
             "name" => ['required', "string", 'unique:products,name'],
             'description' => ['required', 'min:10'],
 
-
             'brand_id' => 'exists:brands,id',
             'category_id' => 'exists:categories,id',
             'discount_id' => 'exists:discounts,id',
@@ -43,6 +42,12 @@ class StoreProductRequest extends FormRequest
             "attributes.*.image_name" => ['required_with:image_path'],
         ];
     }
+
+    public function overallQuantity()
+    {
+        return collect($this->post('attributes'))->sum(fn($attribute) => $attribute['quantity'] ?? 0);
+    }
+
 
     protected function failedValidation(Validator $validator)
     {

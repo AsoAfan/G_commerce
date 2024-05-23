@@ -16,15 +16,13 @@ class AuthSessionController extends Controller
 
     public function show()
     {
-        return [new UserResource(Auth::user())];
+        return resource(new UserResource(Auth::user()));
 
     }
 
 
     function store(LoginRequest $request)
     {
-//        $request->makeSureNotRateLimited();
-
         $user = User::where('email', $request->post('email'))->first();
 
         if (!$user) {
@@ -46,10 +44,6 @@ class AuthSessionController extends Controller
 
     public function destroy()
     {
-        /* (Auth::user()->tokens()->each(function ($token) {
-             $token->delete();
-         }));*/
-//        $user = Auth::user();
         Auth::user()->currentAccessToken()->delete();
         // TODO: redirect to login page
         return ['message' => "Logout succeed", 'code' => 200];

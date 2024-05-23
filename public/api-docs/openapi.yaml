@@ -55,6 +55,9 @@ paths:
   /brands:
     $ref: './paths/brands.yaml#/brands'
 
+  /carts/add:
+    $ref: './paths/cart.yaml#/carts-add'
+
   /categories/create:
     $ref: './paths/categories.yaml#/categories-create'
   /categories/{id}:
@@ -102,14 +105,17 @@ paths:
     $ref: './paths/products.yaml#/products-{id}-rate'
   /products/{id}/favourite:
     $ref: './paths/products.yaml#/products-{id}-favourite'
-
+  /products/featured:
+    $ref: './paths/products.yaml#/products-featured'
   /products/search:
     $ref: './paths/products.yaml#/products-search'
   /products:
     $ref: './paths/products.yaml#/products'
 
-  /subcategories/create:
+  /{categoryId}/subcategories/create:
     $ref: './paths/subcategories.yaml#/subcategories-create'
+  /subcategories/{id}:
+    $ref: './paths/subcategories.yaml#/subcategories-{id}'
   /{categoryId}/subcategories:
     $ref: './paths/subcategories.yaml#/subcategories'
   #  /{slug:category}/{slug:subcategory}:

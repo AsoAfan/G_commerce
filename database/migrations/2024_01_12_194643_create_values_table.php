@@ -4,6 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+// decrement quantity of available products when added to order
+// add quantity to products table which is derived from quantity of attributes for each product 
+
 return new class extends Migration {
     /**
      * Run the migrations.
@@ -14,10 +17,10 @@ return new class extends Migration {
             $table->id();
             $table->foreignUuid('product_id')->constrained('products')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('attribute_id')->constrained('attributes')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('image_path');
-            $table->string('image_name');
-            $table->double('price');
-            $table->char('currency', 3)->default('IQD');
+            $table->string('image_path')->nullable();
+            $table->string('image_name')->nullable();
+            $table->double('price')->nullable();
+            $table->char('currency', 3)->nullable();
             $table->integer('quantity')->default(0);
             $table->string("display_type");
             $table->string('value');

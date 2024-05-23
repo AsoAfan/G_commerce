@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -43,6 +44,26 @@ class UpdateProductRequest extends FormRequest
             'group_ids' => ['array', 'exists:groups,id']
 
         ];
+    }
+
+    public function getProductAttributes(Product $product): array
+    {
+        $syncData = collect($this->post('attributes'))?->mapWithKeys(function ($attribute, $index) use ($product) {
+            $existingAttribute = $product->attributes->get($index);
+            return [
+                $attribute['id'] => [
+                    'value' => $attribute['value'] ?? $existingAttribute->pivot->value,
+                    "display_type" => $attribute['display_type'] ?? $existingAttribute->pivot->display_type,
+                    'price' => $attribute['price'] ?? $existingAttribute->pivot->price,
+                    'currency' => $attribute['currency'] ?? $existingAttribute->pivot->currency,
+                    'image_path' => $attribute['image_path'] ?? $existingAttribute->pivot->image_path,
+                    'image_name' => $attribute['image_name'] ?? $existingAttribute->pivot->image_name,
+                    'quantity' => $attribute['quantity'] ?? $existingAttribute->pivot->quantity,
+                ]
+            ];
+        });
+
+        return $syncData->toArray();
     }
 
     protected function failedValidation(Validator $validator)

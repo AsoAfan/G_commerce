@@ -14,11 +14,13 @@ return new class extends Migration {
             $table->uuid("id")->index();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->boolean('is_featured')->default(false);
 
             # Moved to values table
-//            $table->integer('quantity')->default(0);
-//            $table->double('price');
-//            $table->char('currency', 3)->default('IQD');
+            $table->integer('quantity')->default(0);
+//
+            $table->double('price');
+            $table->char('currency', 3)->default('IQD');
 //            $table->string('image_path');
 //            $table->string('image_name');
 

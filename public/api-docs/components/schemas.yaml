@@ -49,6 +49,44 @@ User:
       type: string
       format: timestamp
       example: 2024-01-06T21:09:55.000000Z | NULL
+FeaturedProduct:
+  type: object
+  properties:
+    id:
+      type: string
+      pattern: '^[0-9a-fA-F\-]{36}$'
+    name:
+      type: string
+      example: Galaxy tab s9 ultra
+    description:
+      type: string
+      example: a tablet made by samsung
+    brand:
+      $ref: '#/Brand'
+    discount:
+      $ref: '#/Discount'
+    attributes:
+      $ref: '#/Attribute'
+    created_at:
+      type: string
+      format: date
+      example: "2024-02-01T21:00:56.000000Z"
+    updated_at:
+      type: string
+      format: date
+      example: "2024-02-01T21:00:56.000000Z"
+
+Cart:
+  type: object
+  properties:
+    id:
+      type: number
+      example: 27
+    products:
+      type: array
+      items:
+        $ref: '#/Product'
+
 Product:
   type: object
   properties:
@@ -61,6 +99,12 @@ Product:
     description:
       type: string
       example: a tablet made by samsung
+    price:
+      type: number
+      example: 385.6
+    currency:
+      type: string
+      example: $
     count_rating:
       description: Number of rating the product has
       type: number
@@ -217,7 +261,16 @@ Category:
       $ref: '#/Discount'
 Subcategory:
   type: object
-  properties: { }
+  properties:
+    id:
+      type: number
+      example: 27
+    name:
+      type: string
+      example: Ipad
+    slug:
+      type: string
+      example: ipad
 paginatedLocation:
   type: object
   properties:

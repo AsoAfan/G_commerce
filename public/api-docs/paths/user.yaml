@@ -121,7 +121,6 @@ user:
       - ApiKey: [ ]
     tags:
       - User
-
     responses:
       200:
         $ref: '../components/responses.yaml#/userResponse/user/200'

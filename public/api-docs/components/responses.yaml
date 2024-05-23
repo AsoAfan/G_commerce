@@ -5,6 +5,14 @@ productResponse:
       application/json:
         schema:
           $ref: './schemas.yaml#/Product'
+  featured:
+    200:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: './schemas.yaml#/FeaturedProduct'
+
   favourite:
     200:
       description: Operation succeed
@@ -50,6 +58,9 @@ productResponse:
                   resource:
                     $ref: '../components/schemas.yaml#/Rating'
 
+
+
+
 brandResponse:
   200:
     description: OK
@@ -73,6 +84,22 @@ brandResponse:
             products_number:
               type: number
               example: 27
+
+cartResponse:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Items added to cart
+            resource:
+              $ref: './schemas.yaml#/Cart'
+
+
 
 categoryResponse:
   200:
@@ -180,6 +207,27 @@ locationResponse:
                 type: number
                 example: 200
 
+subcategoryResponse:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: number
+              example: 51
+            name:
+              type: string
+              example: Ipad
+            slug:
+              type: string
+              example: ipad
+            category:
+              $ref: './schemas.yaml#/Category'
+            discount:
+              $ref: './schemas.yaml#/Discount'
 
 
 
@@ -334,11 +382,34 @@ userResponse:
 
   user:
     200:
-      description: Data returned(OK)
+      description: OK
       content:
         application/json:
           schema:
-            $ref: './schemas.yaml#/User'
+            type: object
+            properties:
+              id:
+                type: string
+                pattern: '^[0-9a-fA-F\-]{36}$'
+              username:
+                type: string
+                example: Joe Doe
+              email:
+                type: string
+                example: Joe.doe@example.com
+              phone_number:
+                type: string
+                example: 12345678910
+              image_path:
+                type: string
+                example: path/to/image.png
+              image_name:
+                type: string
+                example: image.png
+              role:
+                type: string
+                example: user
+
 
 paginatedResponse:
   200:
@@ -449,7 +520,7 @@ generalResponse:
               properties:
                 NOTE:
                   type: string
-                  example: This data can be vary depending on the model Refer to schema section
+                  example: Will be updated soon...
 
             code:
               type: integer

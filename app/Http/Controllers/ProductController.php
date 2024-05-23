@@ -56,13 +56,28 @@ class ProductController extends Controller
 
     }
 
+    public function featured()
+    {
+        // TODO: paginate this if needed
+        $products = Product::where('is_featured', 1)->with([
+            'attributes' => fn($query) => $query->first(),
+            'discount'
+
+        ])->get();
+
+        return [ProductResource::collection($products)];
+    }
 
     public function store(StoreProductRequest $request)
     {
 
+
         $newProduct = Product::create([
             "name" => $request->post('name'),
             'description' => $request->post('description'),
+
+            "price" => $request->post('price'),
+            "quantity" => $request->overallQuantity(),
 
             "brand_id" => $request->post('brand_id'),
             "category_id" => $request->post('category_id'),
@@ -72,6 +87,8 @@ class ProductController extends Controller
 
         $newProduct->groups()->attach($request->post('group_ids'));
         $newProduct->subCategories()->attach($request->post('sub_category_ids'));
+
+        $productQuantity = 0;
 
 //        TODO: can be better(no loop)?
         /*
@@ -154,41 +171,23 @@ class ProductController extends Controller
         $product->groups()->sync($request->post('group_ids'));
         $product->subCategories()->sync($request->post('sub_category_ids'));
 
-        $attributes = $request->post('attributes');
-        $values = [];
-
-        foreach ($attributes as $attribute) {
-            $key = key($attribute);
-            $values[$key] = [
-                'value' => $attribute[$key],
-                "display_type" => $attribute['display_type'],
-                'price' => $attribute['price'],
-                'currency' => $attribute['currency'],
-                'image_path' => $attribute['image_path'],
-                'image_name' => $attribute['image_name'],
-                'quantity' => $attribute['quantity'] ?? 0,
-            ];
-//            dump($values);
-        }
-
         try {
-//            dump($values);
-            $product->attributes()->syncWithoutDetaching($values);
+            $product->load('attributes');
+            $product->attributes()->syncWithoutDetaching($request->getProductAttributes($product));
         } catch (QueryException) {
-            return response([
+            return response()->json([
                 'message' => "Validation failed",
                 'errors' => ['The selected attribute ids is invalid.'],
                 'code' => 422
             ], 422);
         }
 
-        $product->load('attributes');
-        return [
-            'message' => "Product updated successfully",
-            'data' => ['resource' => new ProductResource($product)],
-            'code' => 200
-        ];
 
+        return response()->json([
+            'message' => "Product updated successfully",
+            'data' => ['resource' => new ProductResource($product->refresh())],
+            'code' => 200
+        ]);
     }
 
     /**

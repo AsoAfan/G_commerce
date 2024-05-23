@@ -22,7 +22,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'cart_id'
     ];
+
+    protected $guarded = [];
 
 
     /**
@@ -49,6 +52,25 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    private function createCard(): Cart
+    {
+        // TODO: Re-check
+        $cart = Cart::create();
+        $this->cart_id = $cart->id;
+        $this->save();
+        return $cart;
+    }
+
+    public function getCart()
+    {
+        // TODO: re-check later
+        return Cart::find($this->cart_id) ?: $this->createCard();
+    }
 
     public function coupons()
     {
@@ -66,24 +88,11 @@ class User extends Authenticatable
         return $this->hasMany(Location::class);
     }
 
-    /*
-     *         return $this->belongsToMany(User::class, 'ratings')
-            ->withPivot(['rating', 'review'])->select(['users.id', 'users.username', 'users.image_path', 'rating', 'review']);
-
-     * */
 
     public function ratings()
     {
         return $this->hasMany(Rating::class, 'ratings')->select('users.username');
     }
-
-    /*
-            public function otp()
-        {
-            return $this->hasOne(Otp::class);
-
-        }
-    */
 
 
     function setPasswordAttribute($value): void

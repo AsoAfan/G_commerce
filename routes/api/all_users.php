@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/search', [ProductController::class, 'search']);
+Route::get('/products/featured', [ProductController::class, 'featured']);
 Route::get('/products/{product}', [ProductController::class, 'show'])
     ->missing(fn() => missingRoute());
 
@@ -36,4 +37,7 @@ Route::get('/groups', [GroupController::class, 'index']);
 Route::get('/groups/{group}', [GroupController::class, 'show'])
     ->missing(fn() => missingRoute());
 
-Route::get('/{category}/subcategories', [SubCategoryController::class, 'index']);
+Route::get('/{category}/subcategories', [SubCategoryController::class, 'index'])
+    ->missing(fn() => missingRoute());
+Route::get('subcategories/{subcategory}', [SubCategoryController::class, 'show'])
+    ->missing(fn() => missingRoute());

@@ -17,13 +17,11 @@ install dependencies
 composer update && npm install
 ```
 
-set env
+set env file
+
 ```shell
 cp .env.example .env
 ```
-
-
-duplicate `.env.example` and rename duplicated to `.env`
 
 ### Generate app key
 
